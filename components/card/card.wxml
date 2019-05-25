@@ -1,0 +1,9 @@
+<!--components/card/card.wxml-->
+<view class="box flex-column container">
+  <view class='course-img'>
+    <image src='{{course-img-url}}'></image>
+  </view>
+  <view class="course-name">{{courseName}}</view>
+  <view class="teacher"><text>任课教师：\n{{teacher}}</text></view>
+  
+</view>

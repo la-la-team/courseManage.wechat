@@ -1,0 +1,14 @@
+/* pages/mine/mine.wxss */
+
+.userinfo-avatar{
+  height: 150rpx;
+  width: 150rpx;
+  border-radius: 100rpx;
+  border: solid 1px gray;
+  margin: 20rpx;
+}
+
+.userInfo{
+  border: solid 2px bisque;
+  border-radius: 25rpx;
+}

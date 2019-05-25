@@ -1,0 +1,6 @@
+<!--pages/mine/mine.wxml-->
+<view class="userInfo">
+  <image class="userinfo-avatar" src="/static/img/default_user_avatar.jpg"></image>
+  <text>{{userInfo.nickName}}</text>
+  <button class="modify-btn">修改个人信息</button>
+</view>

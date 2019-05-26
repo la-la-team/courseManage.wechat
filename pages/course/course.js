@@ -1,4 +1,4 @@
-// pages/mycourse/mycourse.js
+// pages/course/course.js
 import store from '../../store/store.js'
 import create from '../../utils/create'
 
@@ -8,23 +8,9 @@ create(store, {
    * 页面的初始数据
    */
   data: {
-    course_array: [{
-        course_img_url: "/static/img/default_course_img.jpeg",
-      course_name: "课程名1",
-        teacher: "教师1",
-        school: "中山大学"
-      }, {
-        course_img_url: "/static/img/default_course_img.jpeg",
-        course_name: "课程名2",
-        teacher: "教师2",
-        school: "中山大学"
-      }, {
-        course_img_url: "/static/img/default_course_img.jpeg",
-        course_name: "课程名3",
-        teacher: "教师3",
-        school: "中山大学"
-      }
-    ]
+    curCourse: null,
+    activeIndex: 0,
+    tabs: ['简介', '课件', '作业', '点名'],
 
   },
 
@@ -32,7 +18,11 @@ create(store, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    if (this.store.data.curCourse){
+      this.setData({
+        curCourse: this.store.data.curCourse
+      });
+    }
   },
 
   /**
@@ -82,14 +72,5 @@ create(store, {
    */
   onShareAppMessage: function () {
 
-  },
-
-  show_course_detail:function (e) {
-    this.store.data.curCourse = e.currentTarget.dataset.item;
-    wx.navigateTo({
-      url: '/pages/course/course'
-    });
   }
-
-
 })

@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/mine/mine",
     "pages/allcourses/allcourses",
+    "pages/course/course",
     "pages/logs/logs",
-    
+    "pages/mine/mine",
     "pages/index/index"
     
   ],

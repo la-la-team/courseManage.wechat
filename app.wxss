@@ -1,5 +1,5 @@
 /**app.wxss**/
-@import "/components/wxSearch/wxSearch.wxss";
+@import 'weui.wxss';
 .container {
   height: 100%;
   display: flex;

@@ -1,6 +1,62 @@
 <!--pages/mine/mine.wxml-->
-<view class="userInfo">
-  <image class="userinfo-avatar" src="/static/img/default_user_avatar.jpg"></image>
-  <text>{{userInfo.nickName}}</text>
-  <button class="modify-btn">修改个人信息</button>
+
+<view class="page">
+  <view class='page__hd'>
+    <view class="userInfo">
+      <image class="userinfo-avatar" src="/static/img/default_user_avatar.jpg"></image>
+      <text>{{userInfo.nickName}}</text>
+    </view>
+  </view>
+  <view class='page__bd'>
+    <view class="weui-cells__title">课程选项</view>
+
+    <view class="weui-cells weui-cells_after-title">
+
+      <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+
+        <view class="weui-cell__bd">创建课程</view>
+
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+
+      </navigator>
+
+      <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+
+        <view class="weui-cell__bd">加入课程</view>
+
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+
+      </navigator>
+
+      <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+
+        <view class="weui-cell__bd">我的课程</view>
+
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+
+      </navigator>
+
+    </view>
+
+
+    <view class="weui-cells__title">个人选项</view>
+
+    <view class="weui-cells weui-cells_after-title">
+
+      <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+
+        <view class="weui-cell__bd">修改个人信息</view>
+
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+
+      </navigator>
+
+
+    </view>
+
+  </view>
 </view>
+
+
+
+

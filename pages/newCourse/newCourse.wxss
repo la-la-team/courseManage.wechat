@@ -1,0 +1,28 @@
+/* pages/newCourse/newCourse.wxss */
+
+.weui-cells__title_two{
+  margin-top:.77em;
+  margin-bottom:.3em;
+  padding-left:15px;
+  padding-right:15px;
+  color:#999;
+  font-size:14px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.right {
+  align-self: flex-end;
+  margin-right: 0;
+  margin-top: 0;
+}
+
+.small_img{
+  float:left;
+  position:relative;
+  margin-right:9px;
+  margin-bottom:9px;
+  width:77px;
+  height:77px;
+}

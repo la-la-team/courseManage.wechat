@@ -11,7 +11,20 @@ create(store, {
     curCourse: null,
     activeIndex: 0,
     tabs: ['简介', '课件', '作业', '点名'],
+    curUserHasJoined: false,
+    sliderOffset: 0,
+    sliderLeft: 0,
 
+    files: [{
+      filetype_img: "/static/img/pdf_icon.png",
+      file_name: "文件1"
+    }, {
+        filetype_img: "/static/img/pdf_icon.png",
+        file_name: "文件2"
+    }, {
+        filetype_img: "/static/img/pdf_icon.png",
+        file_name: "文件3"
+    }]
   },
 
   /**
@@ -36,7 +49,10 @@ create(store, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+      sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+    });
   },
 
   /**
@@ -72,5 +88,24 @@ create(store, {
    */
   onShareAppMessage: function () {
 
+  },
+
+  tabClick: function (e) {
+    this.setData({
+      sliderOffset: e.currentTarget.offsetLeft,
+      activeIndex: e.currentTarget.id
+    });
+  },
+
+  previewFile: function() {
+    
+  },
+
+  chooseFile: function(){
+    wx.getSavedFileList({
+      success: function (res) {
+        console.log(res.fileList)
+      }
+    })
   }
 })

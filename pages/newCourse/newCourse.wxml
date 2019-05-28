@@ -1,0 +1,60 @@
+<!--pages/newCourse/newCourse.wxml-->
+<view class="page">
+  <view class='page__bd page__bd_spacing'>
+
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__hd">
+          <view class="weui-label">课程图片</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-uploader__input-box">
+            <view class="weui-uploader__input" bindtap="chooseimage" hidden='haveChoseImg'></view>
+            <image src='{{tempFilePaths}}' class='small_img'></image>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">名称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" bindinput='inputName' placeholder="请输入课程名称" />
+        </view>
+      </view>
+    </view>
+    <view class="weui-cells__title">课程概要</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" bindinput="inputDesc" placeholder="请输入课程概要" style="height: 3.3em"  maxlength='200' />
+          <view class="weui-textarea-counter">{{descLength}}/200</view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-cells__title_two">添加助教
+      <button class="weui-btn mini-btn right" type="default" size="mini" bindtap='addTa'>添加</button>
+    </view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell" wx:for="{{TA_ids}}">
+        <view class="weui-cell__hd">
+          <view class="weui-label">学号：</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-label right">{{item}}</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="right">移除</view>
+        </view>
+      </view>
+    </view>
+    <button class="weui-btn" type="primary">提交</button>
+  </view>
+
+  <modal id="modal" hidden="{{hiddenmodalput}}" title="输入助教学号" confirm-text="添加" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
+  <input type='number' bindinput='{{newTaId}}'  auto-focus="true" />
+  </modal>
+</view>

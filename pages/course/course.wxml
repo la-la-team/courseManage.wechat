@@ -9,13 +9,63 @@
         <textarea class="course-name" disabled='true' auto-height='true'>{{curCourse.course_name}}</textarea>
       </view>
     </view>
-
+  </view>
+  <view class='page_bd'>
     <view class="weui-tab">
       <view class="weui-tab__panel">
-        <view class="weui-tab__content" hidden="{{activeIndex != 0}}">PHOTO</view>
-        <view class="weui-tab__content" hidden="{{activeIndex != 1}}">BLOG</view>
+         <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+          <view class="weui-form-preview">
+            <view class="weui-form-preview__bd">
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">课程概要</view>
+                <view class="weui-form-preview__value">很长很长的介绍很长很长的名字很长很长的介绍很长很长的名字很长很长的介绍</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">任课教师</view>
+                <view class="weui-form-preview__value">陈一丁</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">教师邮箱</view>
+                <view class="weui-form-preview__value">88888888@88.8</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">课程助教</view>
+                <view class="weui-form-preview__value">陈小会；繁星</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">助教邮箱</view>
+                <view class="weui-form-preview__value">66666666@66.6；77777777@77.7</view>
+              </view>
+            </view>
+            <view class="weui-form-preview__ft">
+              <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" hidden='{{curUserHasJoined}}'>加入</navigator>
+            </view>
+          </view>
+        </view> 
+        <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+          <view class="weui-uploader__bd">
+
+            <view class="weui-uploader__files" id="uploaderFiles">
+
+              <block wx:for="{{files}}" wx:key="*this">
+                <view class="weui-uploader__file" bindtap="previewFile" >
+                  <image class="weui-uploader__img" src="{{item.filetype_img}}" mode="aspectFill" />
+                  <text class="file_name">{{item.file_name}}</text>
+                </view>
+              </block>
+            </view>
+            <view class="weui-uploader__input-box">
+              <view class="weui-uploader__input" bindtap="chooseFile"></view>
+            </view>
+          </view>
+        </view>
         <view class="weui-tab__content" hidden="{{activeIndex != 2}}">PHOTO</view>
-        <view class="weui-tab__content" hidden="{{activeIndex != 3}}">BLOG</view>
+        <view class="weui-tab__content" hidden="{{activeIndex != 3}}">
+          <view class="content_center" >
+            <button class="weui-btn" type="primary">签到</button>
+            <button class="weui-btn" type="default">查看签到表</button>
+          </view>
+        </view>
       </view>
       <view class="weui-navbar">
         <block wx:for="{{tabs}}" wx:key="*this">
@@ -23,9 +73,8 @@
                 <view class="weui-navbar__title">{{item}}</view>
             </view>
         </block>
-        <view class="weui-navbar__slider" ></view>
+        <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
       </view>
-  </view>
-
+    </view>
   </view>
 </view>

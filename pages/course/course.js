@@ -24,6 +24,20 @@ create(store, {
     }, {
         filetype_img: "/static/img/pdf_icon.png",
         file_name: "文件3"
+    }],
+
+    homework: [{
+      title: "作业一",
+      content: "完成书本第一章课后练习",
+      ddl: "2019.5.31 23:59"
+    },{
+        title: "作业二",
+        content: "完成书本第二章课后练习",
+        ddl: "2019.6.1 23:59"
+    },{
+        title: "作业三",
+        content: "完成书本第三章课后练习",
+        ddl: "2019.7.25 23:59"
     }]
   },
 

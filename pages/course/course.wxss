@@ -124,3 +124,7 @@
   height: 100%;
   padding-top: 40%;
 }
+
+.red_color {
+  color: red;
+}

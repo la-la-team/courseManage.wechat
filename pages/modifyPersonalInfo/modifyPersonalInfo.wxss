@@ -1,0 +1,11 @@
+/* pages/modifyPersonalInfo/modifyPersonalInfo.wxss */
+page {
+  line-height:1.6;
+  font-family:-apple-system-font,Helvetica Neue,sans-serif
+}
+
+.weui-label{
+  width:105px;
+  word-wrap:break-word;
+  word-break:break-all;
+}

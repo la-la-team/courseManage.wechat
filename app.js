@@ -20,7 +20,7 @@ App({
               number: 16340000,
               token: res.code,
               email: "111@qq.com",
-              school: "中山大学",
+              school: "SYSU",
               type: 0
             },
             method: 'POST',

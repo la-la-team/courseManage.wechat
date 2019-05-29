@@ -1,8 +1,8 @@
 export default {
   data: {
     //server: 'http://172.18.33.192:8123',
-    //server: 'http://172.18.32.216:8889',
-    apiBase: '/api',
+    server: 'http://182.254.206.244:8090',
+    apiBase: '',
     motto: 'Hello World',
     openId: null,
     token: null,
@@ -16,6 +16,10 @@ export default {
     lastName: 'zhang',
     fullName: function () {
       return this.firstName + this.lastName
+    },
+    data: {
+      token: null,
+      openId: null
     },
     pureProp: 'pureProp',
     globalPropTest: 'abc', //更改我会刷新所有页面,不需要在组件和页面声明data依赖

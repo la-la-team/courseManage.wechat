@@ -1,4 +1,9 @@
 // pages/newCourse/newCourse.js
+import store from '../../store/store.js'
+import create from '../../utils/create'
+import api_course from '../../api/course.js'
+import api_charge_course from '../../api/charge_course.js'
+
 Page({
 
   /**
@@ -13,7 +18,7 @@ Page({
     courseName: null,
     courseDesc: null,
     haveChoseImg: false,
-    descLength: 0
+    descLength: 0,
   },
 
   /**
@@ -120,6 +125,68 @@ Page({
       courseDesc: e.detail.value,
       descLength: e.detail.value.length
     })
+  },
+
+  submit: function () {
+    const image = this.data.tempFilePaths;
+    const name = this.data.courseName;
+    const content = this.data.courseDesc;
+    //const _TAs = this.data.TA_ids;
+    var newCourseid;
+
+    if (name && content) {
+      wx.showLoading({
+        title: '正在创建...',
+        mask: true
+      })
+      newcourse = {
+        name: name,
+        content: content,
+        creator_id: app.data.openId,
+        img_path: image
+      }
+      api_course.postCourse(newcourse).then(res => {
+        console.log(res)
+        if (res.status == "success") {
+          newCourseid = res.data[0].id
+          return api_course.putCourseHead(newCourseid, image)
+        } else {
+          console.log("创建课程失败...")
+          console.log(res.msg);
+        }
+      }, err => {
+        console.log(err)
+      })
+      .then(res => {
+        if (res.status == "success") {
+          for (var taId in this.data.TA_ids){
+            var chargecourse = {
+              course_id: newCourseid,
+              ta_id: taId
+            }
+            // api_charge_course.post(chargecourse).then(res => {
+              
+            // }, err => {
+
+            // })
+          }
+          
+        } else {
+          console.log("创建课程失败...")
+          console.log(res.msg);
+        }
+      }, err => {
+        // TODO:处理此处的显示
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建失败',
+          icon: 'none'
+        })
+      })
+
+      
+    }
+    
   }
 
 })

@@ -11,7 +11,7 @@ export default {
           //'Authorization': `Bearer ${store.data.token}`
         },
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -35,7 +35,7 @@ export default {
         },
         data: param,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -52,13 +52,13 @@ export default {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'POST',
-        url: `${apiBase}/method=data`,
+        url: `${apiBase}?method=data`,
         header: {
           //'Authorization': `Bearer ${store.data.token}`
         },
         data: courseInfo,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -75,10 +75,11 @@ export default {
     return new Promise((resolve, reject) => {
       wx.uploadFile({
         url: `http://182.254.206.244:8090/course?method=head&id=${id}`,
-        filePath: `${head}`,
+        filePath: head,
         name: 'file',
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          console.log(res)
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -95,7 +96,7 @@ export default {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'PUT',
-        url: `${apiBase}/method=data&id=${id}`,
+        url: `${apiBase}?method=data&id=${id}`,
         header: {
           //'Authorization': `Bearer ${store.data.token}`
         },
@@ -118,7 +119,7 @@ export default {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'PUT',
-        url: `${apiBase}/method=head&id=${id}`,
+        url: `${apiBase}?method=head&id=${id}`,
         header: {
           //'Authorization': `Bearer ${store.data.token}`
         },

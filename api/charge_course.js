@@ -11,7 +11,7 @@ export default {
           //'Authorization': `Bearer ${store.data.token}`
         },
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -33,7 +33,7 @@ export default {
           //'Authorization': `Bearer ${store.data.token}`
         },
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -56,7 +56,7 @@ export default {
         },
         data: chargeCourse,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -69,10 +69,20 @@ export default {
     })
   },
 
-  postManyTa: (number, ta_id_arr) => {
+  postManyTa: (number, ta_id_arr, courseid) => {
     return new Promise((resolve, reject) => {
       for (var taId in ta_id_arr) {
-        
+        var chgcourse = {
+          course_id: courseid,
+          ta_id: taId
+        }
+        postChargeCourse(chargeCourse).then(res => {
+          continue;
+        }, err => {
+          reject(err)
+          break;
+
+        })
       }
     })
     

@@ -4,7 +4,7 @@ import create from '../../utils/create'
 import api_course from '../../api/course.js'
 import api_charge_course from '../../api/charge_course.js'
 
-Page({
+create(store, {
 
   /**
    * 页面的初始数据
@@ -14,20 +14,24 @@ Page({
     TA_ids: ["11223344", "22334455"],
     _TA_id_arr: null,
     newTaId: "学号",
-    tempFilePaths: '' ,
+    tempFilePaths: null ,
     courseName: null,
     courseDesc: null,
     haveChoseImg: false,
     descLength: 0,
+    curUserId: null,
+    newCourseid: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let openid = wx.getStorageSync('openid')
     this.setData({
-      _TA_id_arr: TA_ids
+      curUserId: openid
     })
+    console.log(openid)
   },
 
   /**
@@ -79,14 +83,16 @@ Page({
 
   },
 
-  chooseimage: function () {
+  chooseimage: function (e) {
+    console.log("choose img ...")
     var _this = this;
     wx.chooseImage({
       count: 1, // 默认9  
-      sizeType: 'compressed',
+      sizeType: ['compressed'],
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有  
       success: function (res) {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片  
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片 
+        console.log(res) 
         _this.setData({
           tempFilePaths: res.tempFilePaths,
           haveChoseImg: true
@@ -132,24 +138,23 @@ Page({
     const name = this.data.courseName;
     const content = this.data.courseDesc;
     //const _TAs = this.data.TA_ids;
-    var newCourseid;
 
     if (name && content) {
       wx.showLoading({
-        title: '正在创建...',
+        title: '正在提交',
         mask: true
       })
-      newcourse = {
+      var newcourse = {
         name: name,
         content: content,
-        creator_id: app.data.openId,
+        creator_id: this.data.curUserId,
         img_path: image
       }
       api_course.postCourse(newcourse).then(res => {
-        console.log(res)
-        if (res.status == "success") {
-          newCourseid = res.data[0].id
-          return api_course.putCourseHead(newCourseid, image)
+        console.log(res.data.status)
+        if (res.data.status == "success") {
+          this.newCourseid = res.data.id
+          return api_course.postCourseHead(res.data.id, image)
         } else {
           console.log("创建课程失败...")
           console.log(res.msg);
@@ -158,7 +163,8 @@ Page({
         console.log(err)
       })
       .then(res => {
-        if (res.status == "success") {
+        console.log(res)
+        if (res.data.status == "success") {
           for (var taId in this.data.TA_ids){
             var chargecourse = {
               course_id: newCourseid,

@@ -8,8 +8,8 @@
           <view class="weui-label">课程图片</view>
         </view>
         <view class="weui-cell__bd">
-          <view class="weui-uploader__input-box">
-            <view class="weui-uploader__input" bindtap="chooseimage" hidden='haveChoseImg'></view>
+          <view class="weui-uploader__input-box" bindtap="chooseimage" >
+            <view class="weui-uploader__input"  hidden='haveChoseImg'></view>
             <image src='{{tempFilePaths}}' class='small_img'></image>
           </view>
         </view>
@@ -51,7 +51,7 @@
         </view>
       </view>
     </view>
-    <button class="weui-btn" type="primary">提交</button>
+    <button class="weui-btn" type="primary" bindtap='submit'>提交</button>
   </view>
 
   <modal id="modal" hidden="{{hiddenmodalput}}" title="输入助教学号" confirm-text="添加" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">

@@ -27,30 +27,36 @@ create(store, {
         file_name: "文件3"
     }],
 
-    homework: [{
-      title: "作业一",
-      content: "完成书本第一章课后练习",
-      ddl: "2019.5.31 23:59"
-    },{
-        title: "作业二",
-        content: "完成书本第二章课后练习",
-        ddl: "2019.6.1 23:59"
-    },{
-        title: "作业三",
-        content: "完成书本第三章课后练习",
-        ddl: "2019.7.25 23:59"
-    }]
+    homework: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log("onLoad")
     if (this.store.data.curCourse){
       this.setData({
         curCourse: this.store.data.curCourse
-      });
-      api_homework.getAllHomework()
+      })
+      var that = this
+      api_homework.getHomework(store.data.curCourse).then(function(res){
+        
+        console.log("获取作业列表")
+        console.log(res)
+        let homework = []
+        for(let i=0;i<res.data.data.length;i++)
+        {
+          homework.push({
+            title: res.data.data[i].title,
+            content: res.data.data[i].content,
+            ddl: "2019.5.29 23:59"
+          })
+        }
+        that.setData({
+          homework: homework
+        })
+      })
     }
   },
 
@@ -122,6 +128,13 @@ create(store, {
       success: function (res) {
         console.log(res.fileList)
       }
+    })
+  },
+
+  addHomework: function() {
+    console.log("添加作业")
+    wx.navigateTo({
+      url: '../addHomework/addHomework',
     })
   }
 })

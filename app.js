@@ -25,7 +25,19 @@ App({
             },
             method: 'POST',
             success: res => {
+              console.log("注册成功！")
               console.log(res)
+              wx.setStorageSync('openid', res.data.id)
+              wx.request({
+                url: `http://182.254.206.244:8090/user/${res.data.id}`,
+                data: {
+                  method: 'id',
+                },
+                success: res => {
+                  console.log("登录成功！")
+                  console.log(res)
+                }
+              })
             }
           })
         } else {
@@ -33,7 +45,6 @@ App({
         }
       }
     });
-
   },
   getUserInfo: function () {
     console.log("app.getUserInfo")
@@ -42,6 +53,7 @@ App({
       wx.getSetting({
         success: res => {
           if (res.authSetting['scope.userInfo']) {
+            console.log("已经授权")
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
             wx.getUserInfo({
               success: res => {
@@ -59,6 +71,7 @@ App({
               }
             })
           } else {
+            console.log("未授权")
             reject(res)
           }
         },

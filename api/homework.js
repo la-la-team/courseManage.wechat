@@ -1,5 +1,5 @@
 import store from '../store/store'
-const apiBase = store.data.server + store.data.apiBase + '/homework'
+const apiBase = store.data.server + '/homework'
 
 export default {
   /**
@@ -30,9 +30,12 @@ export default {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'GET',
-        url: `${apiBase}/${id}`,
+        url: `${apiBase}`,
         header: {
           'Authorization': `Bearer ${store.data.token}`
+        },
+        data: {
+          course_id: id
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {

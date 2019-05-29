@@ -4,12 +4,18 @@
     "pages/allcourses/allcourses",
     "pages/index/index",
     "pages/course/course",
-    
     "pages/modifyPersonalInfo/modifyPersonalInfo",
+    "pages/index/index",
+    "pages/course/course",
+    "pages/addHomework/addHomework",
+    
+    
+    
+    "pages/allcourses/allcourses",
+    
     "pages/logs/logs",
     "pages/mine/mine",
     "pages/newCourse/newCourse"
-    
     
   ],
   "window": {

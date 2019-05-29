@@ -69,22 +69,4 @@ export default {
     })
   },
 
-  postManyTa: (number, ta_id_arr, courseid) => {
-    return new Promise((resolve, reject) => {
-      for (var taId in ta_id_arr) {
-        var chgcourse = {
-          course_id: courseid,
-          ta_id: taId
-        }
-        postChargeCourse(chargeCourse).then(res => {
-          continue;
-        }, err => {
-          reject(err)
-          break;
-
-        })
-      }
-    })
-    
-  }
 }

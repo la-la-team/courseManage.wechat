@@ -164,18 +164,24 @@ create(store, {
       })
       .then(res => {
         console.log(res)
+        var postTas = []
         if (res.data.status == "success") {
           for (var taId in this.data.TA_ids){
             var chargecourse = {
               course_id: newCourseid,
               ta_id: taId
             }
-            // api_charge_course.post(chargecourse).then(res => {
-              
-            // }, err => {
-
-            // })
+            postTas.push(api_charge_course.postChargeCourse(chargecourse))
           }
+
+          Promise.all(postTas).then(function (results){
+            results.forEach(function (result){
+              console.log(result)
+            })
+          }).catch(function (e) {
+            console.log("创建课程失败...")
+            console.log(e);
+          })
           
         } else {
           console.log("创建课程失败...")

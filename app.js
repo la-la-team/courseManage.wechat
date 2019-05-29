@@ -7,44 +7,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     console.log('on launch...')
-
-    wx.login({
-      success: function (res) {
-        if (res.code) {
-          //发起网络请求
-          console.log("res.code:" + res.code)
-          wx.request({
-            url: 'http://182.254.206.244:8090/user',
-            data: {
-              name: '111',
-              number: 16340000,
-              token: res.code,
-              email: "111@qq.com",
-              school: "SYSU",
-              type: 0
-            },
-            method: 'POST',
-            success: res => {
-              console.log("注册成功！")
-              console.log(res)
-              wx.setStorageSync('openid', res.data.id)
-              wx.request({
-                url: `http://182.254.206.244:8090/user/${res.data.id}`,
-                data: {
-                  method: 'id',
-                },
-                success: res => {
-                  console.log("登录成功！")
-                  console.log(res)
-                }
-              })
-            }
-          })
-        } else {
-          console.log('登录失败！' + res.errMsg)
-        }
-      }
-    });
+    
   },
   getUserInfo: function () {
     console.log("app.getUserInfo")

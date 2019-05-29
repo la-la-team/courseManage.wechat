@@ -72,7 +72,7 @@
                 </view>
             </view>
             <view class="weui-btn-area">
-              <button class="weui-btn" type="primary" bindtap="showTopTips">添加作业</button>
+              <button class="weui-btn" type="primary" bindtap="addHomework">添加作业</button>
             </view>
         </view>
         </view>

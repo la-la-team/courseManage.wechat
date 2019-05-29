@@ -1,7 +1,7 @@
 export default {
   data: {
     //server: 'http://172.18.33.192:8123',
-    //server: 'http://172.18.32.216:8889',
+    server: 'http://182.254.206.244:8090',
     apiBase: '/api',
     motto: 'Hello World',
     openId: null,
@@ -20,7 +20,7 @@ export default {
     pureProp: 'pureProp',
     globalPropTest: 'abc', //更改我会刷新所有页面,不需要在组件和页面声明data依赖
     ccc: { ddd: 1 }, //更改我会刷新所有页面,不需要在组件和页面声明data依赖
-    curCourse: null
+    curCourse: 1
   },
   globalData: ['globalPropTest', 'ccc.ddd'],
   logMotto: function () {

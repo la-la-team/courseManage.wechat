@@ -1,13 +1,15 @@
 {
   "pages": [
     "pages/course/course",
-    "pages/modifyPersonalInfo/modifyPersonalInfo",
     "pages/allcourses/allcourses",
+    "pages/index/index",
     
+    
+    "pages/modifyPersonalInfo/modifyPersonalInfo",
     "pages/logs/logs",
     "pages/mine/mine",
-    "pages/newCourse/newCourse",
-    "pages/index/index"
+    "pages/newCourse/newCourse"
+    
     
   ],
   "window": {

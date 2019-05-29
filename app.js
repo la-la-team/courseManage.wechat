@@ -12,10 +12,20 @@ App({
       success: function (res) {
         if (res.code) {
           //发起网络请求
+          console.log("res.code:" + res.code)
           wx.request({
-            url: 'https://test.com/onLogin',
+            url: 'http://182.254.206.244:8090/user',
             data: {
-              code: res.code
+              name: '111',
+              number: 16340000,
+              token: res.code,
+              email: "111@qq.com",
+              school: "中山大学",
+              type: 0
+            },
+            method: 'POST',
+            success: res => {
+              console.log(res)
             }
           })
         } else {
@@ -26,6 +36,7 @@ App({
 
   },
   getUserInfo: function () {
+    console.log("app.getUserInfo")
     return new Promise((resolve, reject) => {
       // 获取用户信息
       wx.getSetting({

@@ -71,6 +71,9 @@
                     </view>
                 </view>
             </view>
+            <view class="weui-btn-area">
+              <button class="weui-btn" type="primary" bindtap="showTopTips">添加作业</button>
+            </view>
         </view>
         </view>
         <view class="weui-tab__content" hidden="{{activeIndex != 3}}">

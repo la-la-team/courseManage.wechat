@@ -1,6 +1,7 @@
 // pages/course/course.js
 import store from '../../store/store.js'
 import create from '../../utils/create'
+import api_homework from '../../api/homework.js'
 
 create(store, {
 
@@ -49,6 +50,7 @@ create(store, {
       this.setData({
         curCourse: this.store.data.curCourse
       });
+      api_homework.getAllHomework()
     }
   },
 

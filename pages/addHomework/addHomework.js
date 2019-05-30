@@ -74,10 +74,10 @@ Page({
     if (this.data.title && this.data.content && this.data.ddl)
     {
       api_homework.postHomework({
-        course_id: store.data.curCourse,
+        course_id: store.data.curCourse.course_id,
         title: this.data.title,
         content: this.data.content,
-        ddl: this.data.ddl
+        deadline: this.data.ddl
       }).then(function(res) {
         console.log(res)
         let pages = getCurrentPages();

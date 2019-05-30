@@ -86,7 +86,8 @@ Page({
         homework.push({
           title: that.data.title,
           content: that.data.content,
-          ddl: that.data.ddl
+          ddl: that.data.ddl,
+          id:res.data.id
         })
         prePage.setData({
           homework: homework

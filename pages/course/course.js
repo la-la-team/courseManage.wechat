@@ -178,7 +178,8 @@ create(store, {
           homework.push({
             title: res.data.data[i].title,
             content: res.data.data[i].content,
-            ddl: res.data.data[i].deadline
+            ddl: res.data.data[i].deadline,
+            id: res.data.data[i].id
           })
         }
         that.setData({
@@ -204,6 +205,14 @@ create(store, {
     console.log("添加作业")
     wx.navigateTo({
       url: '../addHomework/addHomework',
+    })
+  },
+
+  deleteHomework: function(e) {
+    console.log("删除作业")
+    console.log(e.currentTarget.dataset.item.id)
+    api_homework.deleteHomework(e.currentTarget.dataset.item.id).then(function(res) {
+      console.log(res)
     })
   }
 })

@@ -51,7 +51,6 @@ export default {
   },
 
   postCourse: (courseInfo) => {
-    console.log("post course" + courseInfo.creator_id)
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'POST',
@@ -63,7 +62,6 @@ export default {
         
         data: courseInfo,
         success: res => {
-          console.log(res)
           if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
@@ -87,9 +85,6 @@ export default {
         header: {
           'content-type': 'application/json',
           'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
-        },
-        formData: {
-          'Cookie': `gosessionid=${sessionId}`
         },
         success: res => {
           console.log(res)

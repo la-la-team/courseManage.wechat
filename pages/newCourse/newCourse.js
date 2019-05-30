@@ -11,7 +11,7 @@ create(store, {
    */
   data: {
     hiddenmodalput: true,
-    TA_ids: [11223344, 22334455],
+    TA_ids: [666],
     _TA_id_arr: null,
     newTaId: "学号",
     tempFilePaths: null ,
@@ -151,12 +151,29 @@ create(store, {
       }
       api_course.postCourse(newcourse).then(res => {
         console.log(res)
-        if (res.data.status == "success") {
-          return api_course.postCourseHead(wx.getStorageSync("openid"), image)
-        } else {
-          console.log("创建课程失败...")
-          console.log(res.msg);
-        }
+        this.setData({
+          newCourseid: res.data.id
+        })
+        return api_course.postCourseHead(res.data.id, image)
+      }, err => {
+        // TODO:处理此处的显示
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建失败',
+          icon: 'none'
+        })
+      }).then(res => {
+        console.log(res)
+        var postTas = []
+        this.data.TA_ids.forEach(taId => {
+          var chargecourse = {
+            course_id: this.data.newCourseid,
+            ta_id: taId
+          }
+          console.log(taId)
+          postTas.push(api_charge_course.postChargeCourse(chargecourse))
+        })
+        return this.store.doManyPromises(postTas)
       }, err => {
         // TODO:处理此处的显示
         wx.hideLoading()
@@ -167,42 +184,22 @@ create(store, {
       })
       .then(res => {
         console.log(res)
-        var postTas = []
-        if (res.data.status == "success") {
-          for (var taId in that.data.TA_ids){
-            var chargecourse = {
-              course_id: this.data.newCourseid,
-              ta_id: taId
-            }
-            postTas.push(api_charge_course.postChargeCourse(chargecourse))
-          }
-
-          Promise.all(postTas).then(function (results){
-            results.forEach(function (result){
-              console.log(result)
-            })
-          }).catch(function (e) {
-            // TODO:处理此处的显示
-            wx.hideLoading()
+        wx.hideLoading()
+        
+        wx.navigateBack({
+          delta: 1,
+          success: function() {
             wx.showToast({
-              title: '创建失败',
+              title: "创建成功",
               icon: 'none'
             })
-          })
-          
-        } else {
-          // TODO:处理此处的显示
-          wx.hideLoading()
-          wx.showToast({
-            title: '创建失败',
-            icon: 'none'
-          })
-        }
+          }
+        })
       }, err => {
-        // TODO:处理此处的显示
+        console.log(err)
         wx.hideLoading()
         wx.showToast({
-          title: '创建失败',
+          title: err.data.msg,
           icon: 'none'
         })
       })

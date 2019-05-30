@@ -33,4 +33,15 @@ export default {
   },
   //默认 false，为 true 会无脑更新所有实例
   //updateAll: true
+
+  //自定义全局可调用函数，执行一组异步操作
+  doManyPromises: (promises) => {
+    return new Promise((resolve, reject) => {
+      Promise.all(promises).then(results => {
+        resolve(results)
+      }).catch(e => {
+        reject(e)
+      })
+    })
+  }
 }

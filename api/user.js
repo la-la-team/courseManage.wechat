@@ -6,7 +6,7 @@ export default{
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'GET',
-        url: `${apiBase}?token=${token}`,
+        url: `${apiBase}?method=token&token=${token}`,
         header: {
           'content-type': 'application/json',
           'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`

@@ -68,7 +68,8 @@ create(store, {
             course_img_url: "/static/img/default_course_img.jpeg",
             course_name: _course.name,
             content: _course.content,
-            creator_id: _course.creator_id
+            creator_id: _course.creator_id,
+            course_id: _course.id
           }
           courses.push(item)
 

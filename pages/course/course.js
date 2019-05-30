@@ -2,6 +2,8 @@
 import store from '../../store/store.js'
 import create from '../../utils/create'
 import api_homework from '../../api/homework.js'
+import api_user from '../../api/user.js'
+import api_charge_course from '../../api/charge_course.js'
 
 create(store, {
 
@@ -15,7 +17,9 @@ create(store, {
     curUserHasJoined: false,
     sliderOffset: 0,
     sliderLeft: 0,
-
+    creator_info: null,
+    ta_names: null,
+    ta_emails: null,
     files: [{
       filetype_img: "/static/img/pdf_icon.png",
       file_name: "文件1"
@@ -39,24 +43,81 @@ create(store, {
       this.setData({
         curCourse: this.store.data.curCourse
       })
-      var that = this
-      api_homework.getHomework(store.data.curCourse).then(function(res){
-        
-        console.log("获取作业列表")
+      console.log(this.data.curCourse)
+      var creatorid = this.data.curCourse.creator_id
+      var courseid = this.data.curCourse.course_id
+      var creator_info = null;
+      var ta_info = null;
+      var ta_names = null;
+      var ta_emails = null;
+      var getTainfoPromises = []
+      api_user.getUserById(creatorid).then(res => {
         console.log(res)
-        let homework = []
-        for(let i=0;i<res.data.data.length;i++)
-        {
-          homework.push({
-            title: res.data.data[i].title,
-            content: res.data.data[i].content,
-            ddl: "2019.5.29 23:59"
-          })
-        }
-        that.setData({
-          homework: homework
+        creator_info = res.data.data
+        this.setData({
+          creator_info: creator_info
         })
+      }, err => {
+        console.log(err)
+        console.log("获取创建者信息失败")
       })
+      
+      
+      api_charge_course.getByCourseId(courseid).then(res => {
+        console.log(res)
+        res.data.data.forEach(chgcourse => {
+        getTainfoPromises.push(api_user.getUserById(chgcourse.ta_id))
+      })
+
+        return this.store.doManyPromises(getTainfoPromises)
+
+      }, err => {
+        console.log(err)
+        console.log("获取助教信息失败")
+      }).then(res => {
+        console.log(res)
+        res.forEach(result =>{
+          ta_info = result.data.data
+          if(ta_names){
+            ta_names = ta_names + "; " + ta_info.name
+          } else {
+            ta_names = ta_info.name
+          }
+
+          if(ta_emails){
+            ta_emails = ta_emails + "; " + ta_info.email
+          } else {
+            ta_emails = ta_info.email
+          }
+        })
+        console.log(ta_names)
+        this.setData({
+          ta_names: ta_names,
+          ta_emails: ta_emails
+        })
+      }, err => {
+        console.log(err)
+        console.log("获取助教信息失败")
+      })
+
+      // var that = this
+      // api_homework.getHomework(store.data.curCourse).then(function(res){
+        
+      //   console.log("获取作业列表")
+      //   console.log(res)
+      //   let homework = []
+      //   for(let i=0;i<res.data.data.length;i++)
+      //   {
+      //     homework.push({
+      //       title: res.data.data[i].title,
+      //       content: res.data.data[i].content,
+      //       ddl: "2019.5.29 23:59"
+      //     })
+      //   }
+      //   that.setData({
+      //     homework: homework
+      //   })
+      // })
     }
   },
 
@@ -71,9 +132,10 @@ create(store, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var windowWidth = wx.getSystemInfoSync().windowWidth
     this.setData({
-      sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
-      sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+      sliderLeft: (windowWidth / this.data.tabs.length - windowWidth / 4) / 2,
+      sliderOffset: windowWidth / this.data.tabs.length * this.data.activeIndex
     });
   },
 

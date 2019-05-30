@@ -11,7 +11,7 @@ create(store, {
    */
   data: {
     hiddenmodalput: true,
-    TA_ids: [666],
+    TA_ids: [666, 777],
     _TA_id_arr: null,
     newTaId: "学号",
     tempFilePaths: null ,

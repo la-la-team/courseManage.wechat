@@ -1,6 +1,6 @@
 import store from '../store/store.js'
 const apiBase = store.data.server + store.data.apiBase + '/charge_course'
-const sessionId = wx.getStorageSync('sessionId')
+
 export default {
   getByCourseId: (course_id) => {
     return new Promise((resolve, reject) => {

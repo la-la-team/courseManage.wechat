@@ -100,24 +100,7 @@ create(store, {
         console.log("获取助教信息失败")
       })
 
-      // var that = this
-      // api_homework.getHomework(store.data.curCourse).then(function(res){
-        
-      //   console.log("获取作业列表")
-      //   console.log(res)
-      //   let homework = []
-      //   for(let i=0;i<res.data.data.length;i++)
-      //   {
-      //     homework.push({
-      //       title: res.data.data[i].title,
-      //       content: res.data.data[i].content,
-      //       ddl: "2019.5.29 23:59"
-      //     })
-      //   }
-      //   that.setData({
-      //     homework: homework
-      //   })
-      // })
+      
     }
   },
 
@@ -137,6 +120,8 @@ create(store, {
       sliderLeft: (windowWidth / this.data.tabs.length - windowWidth / 4) / 2,
       sliderOffset: windowWidth / this.data.tabs.length * this.data.activeIndex
     });
+
+    
   },
 
   /**
@@ -179,6 +164,29 @@ create(store, {
       sliderOffset: e.currentTarget.offsetLeft,
       activeIndex: e.currentTarget.id
     });
+
+    //进入作业
+    if (this.data.activeIndex == 2) {
+      var that = this
+      api_homework.getHomework(store.data.curCourse).then(function(res){
+
+        console.log("获取作业列表")
+        console.log(res)
+        let homework = []
+        for(let i=0;i<res.data.data.length;i++)
+        {
+          homework.push({
+            title: res.data.data[i].title,
+            content: res.data.data[i].content,
+            ddl: res.data.data[i].deadline,
+            id: res.data.data[i].id
+          })
+        }
+        that.setData({
+          homework: homework
+        })
+      })
+    }
   },
 
   previewFile: function() {
@@ -197,6 +205,14 @@ create(store, {
     console.log("添加作业")
     wx.navigateTo({
       url: '../addHomework/addHomework',
+    })
+  },
+
+  deleteHomework: function(e) {
+    console.log("删除作业")
+    console.log(e.currentTarget.dataset.item.id)
+    api_homework.deleteHomework(e.currentTarget.dataset.item.id).then(function(res) {
+      console.log(res)
     })
   }
 })

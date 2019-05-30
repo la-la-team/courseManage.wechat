@@ -102,7 +102,7 @@ export default {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'DELETE',
-        url: `${apiBase}/${taskId}`,
+        url: `${apiBase}/${id}`,
         header: {
           'content-type': 'application/json',
           'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`

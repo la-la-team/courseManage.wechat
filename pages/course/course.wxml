@@ -69,6 +69,7 @@
                         <view class="weui-media-box__info__meta red_color">DDL</view>
                         <view class="weui-media-box__info__meta red_color">{{item.ddl}}</view>
                     </view>
+                    <button class="weui-btn mini-btn right" type="warn" size="mini" bindtap='deleteHomework' data-item='{{item}}'>删除</button>
                 </view>
             </view>
             <view class="weui-btn-area">

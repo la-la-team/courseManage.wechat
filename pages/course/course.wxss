@@ -128,3 +128,9 @@
 .red_color {
   color: red;
 }
+
+.right {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+}

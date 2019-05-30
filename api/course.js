@@ -26,6 +26,40 @@ export default {
     })
   },
 
+  getCourseHeadById: (courseid) => {
+    return new Promise((resolve, reject) => {
+      wx.downloadFile({
+        url: `${apiBase}?method=head&id=${courseid}`, 
+        success(res) {
+          if (res.statusCode === 200) {
+            // wx.playVoice({
+            //   filePath: res.tempFilePath
+            // })
+          }
+        }
+      })
+      
+      wx.request({
+        method: 'GET',
+        url: `${apiBase}?method=head&id=${courseid}`,
+        header: {
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
+        },
+        success: res => {
+          if (res.statusCode != 200 || res.data.status == "failed") {
+            reject(res)
+          } else {
+            resolve(res)
+          }
+        },
+        fail: err => {
+          reject(err)
+        }
+      })
+    })
+  },
+
   getCourseById: (creatorId) => {
     return new Promise((resolve, reject) => {
       wx.request({

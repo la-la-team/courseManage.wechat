@@ -43,52 +43,34 @@ create(store, {
     })
 
     var courses = []
+    var courseHeads = []
+
+    //获取课程信息 then 获取creator信息
     api_course.getAllCourse().then(res => {
       console.log(res)
-      if (res.data.status == "success"){
-
-        // if (res.cookies[0]){
-        //   var cookie = res.cookies[0];
-        //   var session = cookie.split(';')[0];
-        //   var sessionId = session.split('=')[1]
-        //   wx.setStorageSync('sessionId', sessionId)
-        // }
-
-        var len = res.data.data.length
-        if(len == 0) {
-          wx.hideLoading()
-          return 
-        }
-        var getid_promises = []
-
-        //获取课程基本信息
-        res.data.data.forEach(function(_course, index) {
-          getid_promises.push(api_user.getUserById(_course.creator_id))
-          var item = {
-            course_img_url: "/static/img/default_course_img.jpeg",
-            course_name: _course.name,
-            content: _course.content,
-            creator_id: _course.creator_id,
-            course_id: _course.id
-          }
-          courses.push(item)
-
-          if (index == res.data.data.length - 1){
-
-            return getid_promises            
-            
-          }
-
-        })
-        console.log(getid_promises)
-
-        return this.store.doManyPromises(getid_promises)
-
-        // this.setData({
-        //   course_array: temp
-        // })
-        
+      var len = res.data.data.length
+      if (len == 0) {
+        wx.hideLoading()
+        return
       }
+      var getid_promises = []
+
+      //获取课程基本信息
+      res.data.data.forEach(function (_course) {
+        getid_promises.push(api_user.getUserById(_course.creator_id))
+
+        var item = {
+          course_img_url: "/static/img/default_course_img.jpeg",
+          course_name: _course.name,
+          content: _course.content,
+          creator_id: _course.creator_id,
+          course_id: _course.id
+        }
+        courses.push(item)
+
+      })
+
+      return this.store.doManyPromises(getid_promises)
     }, err=>{
       wx.showToast({
         title: '获取课程列表失败',
@@ -96,6 +78,7 @@ create(store, {
       })
     })
     .then(res => {
+      if(!res) return
       console.log(res)
       res.forEach(result => {
         var _cid = result.data.data.id
@@ -116,6 +99,34 @@ create(store, {
     }, err => {
       console.log(err)
     })
+
+    //获取课程信息 then 获取head信息
+    api_course.getAllCourse().then(res => {
+      var len = res.data.data.length
+      if (len == 0) {
+        wx.hideLoading()
+        return
+      }
+
+      var gethead_promises = []
+
+      //获取课程基本信息
+      res.data.data.forEach(function (_course) {
+        gethead_promises.push(api_course.getCourseHeadById(_course.id))
+      })
+
+      return this.store.doManyPromises(gethead_promises)
+    }, err => {
+      console.log(err)
+    })
+    .then(res => {
+      if (!res) return
+      console.log(res)
+    }, err => {
+      console.log(err)
+    })
+    
+    
   },
 
   /**

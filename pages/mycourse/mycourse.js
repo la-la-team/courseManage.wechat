@@ -10,17 +10,117 @@ create(store, {
    * 页面的初始数据
    */
   data: {
-    curUserId: null
+    curUserId: null,
+    course_array: null,
+    imgPaths: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var id = wx.getStorageSync("openid")
+    var userid = wx.getStorageSync("openid")
     this.setData({
-      curUserId: id
+      curUserId: userid
     })
+
+    wx.showLoading({
+      title: '正在获取课程列表',
+      mask: true
+    })
+
+    var courses = []
+    var courseHeads = []
+
+    //获取课程信息 then 获取creator信息
+    api_course.getCourseById(userid).then(res => {
+      console.log(res)
+      var len = res.data.data.length
+      if (len == 0) {
+        wx.hideLoading()
+        return
+      }
+      var getid_promises = []
+
+      //获取课程基本信息
+      res.data.data.forEach(function (_course) {
+        getid_promises.push(api_user.getUserById(_course.creator_id))
+
+        var item = {
+          course_img_url: "/static/img/default_course_img.jpeg",
+          course_name: _course.name,
+          content: _course.content,
+          creator_id: _course.creator_id,
+          course_id: _course.id
+        }
+        courses.push(item)
+
+      })
+
+      return this.store.doManyPromises(getid_promises)
+    }, err => {
+      wx.showToast({
+        title: '获取课程列表失败',
+        icon: 'none'
+      })
+    })
+      .then(res => {
+        if (!res) return
+        console.log(res)
+        res.forEach(result => {
+          var _cid = result.data.data.id
+          courses.forEach(item => {
+            if (item.creator_id == _cid) {
+              item.teacher = result.data.data.name
+              item.school = result.data.data.school
+            }
+          })
+        })
+
+        this.setData({
+          course_array: courses
+        })
+
+        wx.hideLoading()
+
+      }, err => {
+        console.log(err)
+      })
+
+
+    //获取课程信息 then 获取head信息
+    api_course.getCourseById(userid).then(res => {
+      var len = res.data.data.length
+      if (len == 0) {
+        wx.hideLoading()
+        return
+      }
+
+      var gethead_promises = []
+
+      //获取课程基本信息
+      res.data.data.forEach(function (_course) {
+        gethead_promises.push(api_course.getCourseHeadById(_course.id))
+      })
+
+      return this.store.doManyPromises(gethead_promises)
+    }, err => {
+      console.log(err)
+    })
+      .then(res => {
+        if (!res) return
+        console.log(res)
+        var img_paths = []
+        res.forEach(result => {
+          img_paths.push(result.tempFilePath)
+        })
+        this.setData({
+          imgPaths: img_paths
+        })
+      }, err => {
+        console.log(err)
+      })
+
   },
 
   /**
@@ -70,5 +170,12 @@ create(store, {
    */
   onShareAppMessage: function () {
 
+  },
+
+  show_course_detail: function (e) {
+    this.store.data.curCourse = e.currentTarget.dataset.item;
+    wx.navigateTo({
+      url: '/pages/course/course'
+    });
   }
 })

@@ -28,7 +28,7 @@
 
       </navigator>
 
-      <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <navigator url="/pages/mycourse/mycourse" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 
         <view class="weui-cell__bd">我的课程</view>
 

@@ -29,7 +29,9 @@ create(store, {
         teacher: "教师3",
         school: "中山大学"
       }
-    ]
+    ],
+
+    imgPaths: null
 
   },
 
@@ -100,6 +102,7 @@ create(store, {
       console.log(err)
     })
 
+   
     //获取课程信息 then 获取head信息
     api_course.getAllCourse().then(res => {
       var len = res.data.data.length
@@ -122,6 +125,13 @@ create(store, {
     .then(res => {
       if (!res) return
       console.log(res)
+      var img_paths = []
+      res.forEach(result => {
+        img_paths.push(result.tempFilePath)
+      })
+      this.setData({
+        imgPaths: img_paths
+      })
     }, err => {
       console.log(err)
     })

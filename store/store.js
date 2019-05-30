@@ -17,6 +17,7 @@ export default {
     fullName: function () {
       return this.firstName + this.lastName
     },
+    sessionId: null,
     data: {
       token: null,
       openId: null

@@ -7,7 +7,6 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     console.log('on launch...')
-    
   },
   getUserInfo: function () {
     console.log("app.getUserInfo")

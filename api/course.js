@@ -1,14 +1,16 @@
 import store from '../store/store.js'
 const apiBase = store.data.server + store.data.apiBase + '/course'
 
+const sessionId = wx.getStorageSync('sessionId')
 export default {
   getAllCourse: () => {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'GET',
-        url: `${apiBase}`,
+        url: `${apiBase}?method=data`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/x-www-form-urlencoded',
+          'cookie': `gosessionid=${sessionId}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == "failed") {
@@ -25,15 +27,15 @@ export default {
   },
 
   getCourseById: (creatorId) => {
-    let param = creatorId ? { id: creatorId } : {}
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'GET',
-        url: `${apiBase}/creator_id`,
+        url: `${apiBase}?method=data&creator_id=${creatorId}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/x-www-form-urlencoded',
+          'cookie': `gosessionid=${sessionId}`
         },
-        data: param,
+        data: null,
         success: res => {
           if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
@@ -54,7 +56,8 @@ export default {
         method: 'POST',
         url: `${apiBase}?method=data`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/x-www-form-urlencoded',
+          'cookie': `gosessionid=${sessionId}`
         },
         data: courseInfo,
         success: res => {
@@ -71,12 +74,19 @@ export default {
     })
   },
 
-  postCourseHead: (id, head)=>{
+  postCourseHead: (course_id, head)=>{
+    console.log("postCourseHead")
     return new Promise((resolve, reject) => {
       wx.uploadFile({
-        url: `http://182.254.206.244:8090/course?method=head&id=${id}`,
+        url: `http://182.254.206.244:8090/course?method=head&id=${course_id}`,
         filePath: head,
         name: 'file',
+        header: {
+          "Content-Type": "multipart/form-data"//记得设置
+        },
+        formData: {
+          'Cookie': `gosessionid=${sessionId}`
+        },
         success: res => {
           console.log(res)
           if (res.statusCode != 200 || res.data.status == "failed") {
@@ -98,11 +108,12 @@ export default {
         method: 'PUT',
         url: `${apiBase}?method=data&id=${id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/x-www-form-urlencoded',
+          'cookie': `gosessionid=${sessionId}`
         },
         data: courseInfo,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -117,15 +128,13 @@ export default {
 
   putCourseHead: (id, head) => {
     return new Promise((resolve, reject) => {
-      wx.request({
-        method: 'PUT',
-        url: `${apiBase}?method=head&id=${id}`,
-        header: {
-          //'Authorization': `Bearer ${store.data.token}`
-        },
-        data: head,
+      wx.uploadFile({
+        url: `http://182.254.206.244:8090/course?method=head&id=${id}`,
+        filePath: head,
+        name: 'file',
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          console.log(res)
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)
@@ -144,11 +153,12 @@ export default {
         method: 'DELETE',
         url: `${apiBase}?id=${id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/x-www-form-urlencoded',
+          'cookie': `gosessionid=${sessionId}`
         },
         data: null,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
             resolve(res)

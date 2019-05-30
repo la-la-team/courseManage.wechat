@@ -1,5 +1,10 @@
 // pages/modifyPersonalInfo/modifyPersonalInfo.js
-Page({
+import store from '../../store/store.js'
+import create from '../../utils/create'
+import api_user from '../../api/user.js'
+
+const app = App()
+create(store, {
 
   /**
    * 页面的初始数据
@@ -18,10 +23,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
     wx.getUserInfo({
       success: res => {
         console.log("获取用户信息")
         console.log(res)
+        if (res.userInfo) {
+          this.store.data.userInfo = res.userInfo
+          this.store.data.hasUserInfo = true
+        }
         this.setData({
           name: res.userInfo.nickName
         })
@@ -40,7 +50,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let openid = wx.getStorageSync('openid')
+    console.log(openid)
+    if (openid) {
+      wx.switchTab({
+        url: '/pages/allcourses/allcourses'
+      })
+    }
   },
 
   /**
@@ -99,12 +115,13 @@ Page({
     wx.login({
       success: function (res) {
         if (res.code) {
+          wx.setStorageSync('openid', parseInt(that.data.number))
           //发起网络请求
           wx.request({
             url: 'http://182.254.206.244:8090/user',
             data: {
+              id: parseInt(that.data.number),
               name: that.data.name,
-              number: parseInt(that.data.number),
               token: res.code,
               email: that.data.email,
               school: that.data.schools[that.data.schoolIndex],
@@ -114,20 +131,54 @@ Page({
             success: res => {
               console.log("注册成功！")
               console.log(res)
-              wx.setStorageSync('openid', res.data.id)
+              
               wx.request({
-                url: `http://182.254.206.244:8090/user/${res.data.id}`,
+                url: `http://182.254.206.244:8090/user/${that.data.number}`,
                 data: {
                   method: 'id',
                 },
                 success: res => {
                   console.log("登录成功！")
                   console.log(res)
+                  var cookie = res.cookies[0];
+                  var session = cookie.split(';')[0];
+                  console.log(session)
+                  wx.setStorageSync('sessionId', session.split('=')[1])
                   wx.switchTab({
                     url: '../allcourses/allcourses'
                   })
+
+                  //test session
+                  var num = wx.getStorageSync('openid')
+                  var user = {
+                    id: parseInt(num),
+                    name: "xiugai",
+                    token: "test",
+                    email: "test",
+                    school: "test",
+                    type: 0
+                  }
+                  var sessionId = session.split('=')[1]
+                  wx.request({
+                    method: 'PUT',
+                    url: `http://182.254.206.244:8090/user`,
+                    header: {
+                      'content-type': 'application/x-www-form-urlencoded',
+                      'cookie': `gosessionid=${sessionId}`
+                    },
+                    data: user,
+                    success: res => {
+                      console.log(res)
+                    },
+                    fail: err => {
+                      console.log(err)
+                    }
+                  })
                 }
               })
+            },
+            fail: res => {
+              console.log('登录失败！' + res)
             }
           })
         } else {

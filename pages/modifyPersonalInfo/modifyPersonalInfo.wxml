@@ -10,6 +10,12 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
+                    <view class="weui-label">姓名</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput='bindInput' data-inputName='name' placeholder="请输入姓名"/>
+                </view>
+                <view class="weui-cell__hd">
                     <view class="weui-label">学号</view>
                 </view>
                 <view class="weui-cell__bd">

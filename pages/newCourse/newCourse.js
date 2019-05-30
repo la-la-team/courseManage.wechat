@@ -11,7 +11,7 @@ create(store, {
    */
   data: {
     hiddenmodalput: true,
-    TA_ids: ["11223344", "22334455"],
+    TA_ids: [11223344, 22334455],
     _TA_id_arr: null,
     newTaId: "学号",
     tempFilePaths: null ,
@@ -28,10 +28,11 @@ create(store, {
    */
   onLoad: function (options) {
     let openid = wx.getStorageSync('openid')
+    console.log("openid " + openid)
     this.setData({
       curUserId: openid
     })
-    console.log(openid)
+    
   },
 
   /**
@@ -84,7 +85,6 @@ create(store, {
   },
 
   chooseimage: function (e) {
-    console.log("choose img ...")
     var _this = this;
     wx.chooseImage({
       count: 1, // 默认9  
@@ -92,9 +92,8 @@ create(store, {
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有  
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片 
-        console.log(res) 
         _this.setData({
-          tempFilePaths: res.tempFilePaths,
+          tempFilePaths: res.tempFilePaths[0],
           haveChoseImg: true
         })
       }
@@ -148,27 +147,33 @@ create(store, {
         name: name,
         content: content,
         creator_id: this.data.curUserId,
-        img_path: image
+        img_path: ""
       }
       api_course.postCourse(newcourse).then(res => {
-        console.log(res.data.status)
+        console.log("111" + res)
         if (res.data.status == "success") {
-          this.newCourseid = res.data.id
+          that.data.newCourseid = res.data.id
+          console.log(res.data.id)
           return api_course.postCourseHead(res.data.id, image)
         } else {
           console.log("创建课程失败...")
           console.log(res.msg);
         }
       }, err => {
-        console.log(err)
+        // TODO:处理此处的显示
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建失败',
+          icon: 'none'
+        })
       })
       .then(res => {
         console.log(res)
         var postTas = []
         if (res.data.status == "success") {
-          for (var taId in this.data.TA_ids){
+          for (var taId in that.data.TA_ids){
             var chargecourse = {
-              course_id: newCourseid,
+              course_id: this.data.newCourseid,
               ta_id: taId
             }
             postTas.push(api_charge_course.postChargeCourse(chargecourse))
@@ -179,13 +184,21 @@ create(store, {
               console.log(result)
             })
           }).catch(function (e) {
-            console.log("创建课程失败...")
-            console.log(e);
+            // TODO:处理此处的显示
+            wx.hideLoading()
+            wx.showToast({
+              title: '创建失败',
+              icon: 'none'
+            })
           })
           
         } else {
-          console.log("创建课程失败...")
-          console.log(res.msg);
+          // TODO:处理此处的显示
+          wx.hideLoading()
+          wx.showToast({
+            title: '创建失败',
+            icon: 'none'
+          })
         }
       }, err => {
         // TODO:处理此处的显示

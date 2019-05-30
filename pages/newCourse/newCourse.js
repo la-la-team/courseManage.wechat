@@ -146,15 +146,13 @@ create(store, {
       var newcourse = {
         name: name,
         content: content,
-        creator_id: this.data.curUserId,
+        creator_id: wx.getStorageSync("openid"),
         img_path: ""
       }
       api_course.postCourse(newcourse).then(res => {
-        console.log("111" + res)
+        console.log(res)
         if (res.data.status == "success") {
-          that.data.newCourseid = res.data.id
-          console.log(res.data.id)
-          return api_course.postCourseHead(res.data.id, image)
+          return api_course.postCourseHead(wx.getStorageSync("openid"), image)
         } else {
           console.log("创建课程失败...")
           console.log(res.msg);

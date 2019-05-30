@@ -3,7 +3,7 @@
     
     "pages/modifyPersonalInfo/modifyPersonalInfo",
     "pages/allcourses/allcourses",
-    
+    "pages/mycourse/mycourse",
     "pages/index/index",
     "pages/course/course",
     "pages/addHomework/addHomework",

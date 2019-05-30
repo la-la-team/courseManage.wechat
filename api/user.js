@@ -8,8 +8,8 @@ export default{
         method: 'GET',
         url: `${apiBase}?token=${token}`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded', 
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {
@@ -31,8 +31,8 @@ export default{
         method: 'GET',
         url: `${apiBase}/${id}?method=id`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {
@@ -53,7 +53,8 @@ export default{
       method: 'POST',
       url: `${apiBase}`,
       header: {
-        //'Authorization': `Bearer ${store.data.token}`
+        'content-type': 'application/json',
+        'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
       },
       data: user,
       success: res => {
@@ -74,8 +75,8 @@ export default{
       method: 'PUT',
       url: `${apiBase}`,
       header: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'cookie': `gosessionid=${sessionId}`
+        'content-type': 'application/json',
+        'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
       },
       data: user,
       success: res => {

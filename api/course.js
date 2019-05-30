@@ -1,7 +1,7 @@
 import store from '../store/store.js'
 const apiBase = store.data.server + store.data.apiBase + '/course'
 
-const sessionId = wx.getStorageSync('sessionId')
+
 export default {
   getAllCourse: () => {
     return new Promise((resolve, reject) => {
@@ -9,8 +9,8 @@ export default {
         method: 'GET',
         url: `${apiBase}?method=data`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == "failed") {
@@ -32,8 +32,8 @@ export default {
         method: 'GET',
         url: `${apiBase}?method=data&creator_id=${creatorId}`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: null,
         success: res => {
@@ -51,16 +51,19 @@ export default {
   },
 
   postCourse: (courseInfo) => {
+    console.log("post course" + courseInfo.creator_id)
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'POST',
         url: `${apiBase}?method=data`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
+        
         data: courseInfo,
         success: res => {
+          console.log(res)
           if (res.statusCode != 200 || res.data.status == "failed") {
             reject(res)
           } else {
@@ -78,11 +81,12 @@ export default {
     console.log("postCourseHead")
     return new Promise((resolve, reject) => {
       wx.uploadFile({
-        url: `http://182.254.206.244:8090/course?method=head&id=${course_id}`,
+        url: `${apiBase}?method=head&id=${course_id}`,
         filePath: head,
         name: 'file',
         header: {
-          "Content-Type": "multipart/form-data"//记得设置
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         formData: {
           'Cookie': `gosessionid=${sessionId}`
@@ -108,8 +112,8 @@ export default {
         method: 'PUT',
         url: `${apiBase}?method=data&id=${id}`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: courseInfo,
         success: res => {
@@ -153,8 +157,8 @@ export default {
         method: 'DELETE',
         url: `${apiBase}?id=${id}`,
         header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cookie': `gosessionid=${sessionId}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: null,
         success: res => {

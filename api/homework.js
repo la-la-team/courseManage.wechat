@@ -1,6 +1,6 @@
 import store from '../store/store'
 const apiBase = store.data.server + '/homework'
-
+const sessionId = wx.getStorageSync('sessionId')
 export default {
   /**
    *  param对即get请求的参数
@@ -11,7 +11,8 @@ export default {
         method: 'GET',
         url: `${apiBase}`,
         header: {
-          'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {
@@ -32,7 +33,8 @@ export default {
         method: 'GET',
         url: `${apiBase}`,
         header: {
-          'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: {
           course_id: id
@@ -56,7 +58,8 @@ export default {
         method: 'POST',
         url: `${apiBase}`,
         header: {
-          'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: homework,
         success: res => {
@@ -78,7 +81,8 @@ export default {
         method: 'PUT',
         url: `${apiBase}/${task.taskId}`,
         header: {
-          'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: homework,
         success: res => {
@@ -100,7 +104,8 @@ export default {
         method: 'DELETE',
         url: `${apiBase}/${taskId}`,
         header: {
-          'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: {
           id: id

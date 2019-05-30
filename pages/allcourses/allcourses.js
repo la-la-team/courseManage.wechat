@@ -42,14 +42,23 @@ create(store, {
       mask: true
     })
     api_course.getAllCourse().then(res => {
-      console.log("getALlCourse")
       console.log(res)
       if (res.data.status == "success"){
+
+        // if (res.cookies[0]){
+        //   var cookie = res.cookies[0];
+        //   var session = cookie.split(';')[0];
+        //   var sessionId = session.split('=')[1]
+        //   wx.setStorageSync('sessionId', sessionId)
+          
+        // }
+
         var len = res.data.data.length
         if(len == 0) {
           wx.hideLoading()
           return 
         }
+        var temp = []
         res.data.data.forEach(function(_course, index){
           var creator_data = api_user.getUserById(_course.creator_id).then(res => {
             if(res.data.status == "success"){
@@ -69,10 +78,14 @@ create(store, {
             teacher: _course.creator_id,
             school: creator_data.school
           }
-          this.data.course_array.push(item)
+          temp.push(item)
           if (index == len-1){
             wx.hideLoading()
           }
+        })
+
+        this.setData({
+          course_array: temp
         })
       }
     }, err=>{

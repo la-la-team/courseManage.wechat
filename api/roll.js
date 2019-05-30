@@ -1,6 +1,6 @@
 import store from '../store/store.js'
 const apiBase = store.data.server + store.data.apiBase + '/roll'
-
+const sessionId = wx.getStorageSync('sessionId')
 export default {
   getRollById: (id) => {
     return new Promise((resolve, reject) => {
@@ -8,7 +8,8 @@ export default {
         method: 'GET',
         url: `${apiBase}?id=${id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {
@@ -30,7 +31,8 @@ export default {
         method: 'POST',
         url: `${apiBase}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: roll,
         success: res => {
@@ -53,7 +55,8 @@ export default {
         method: 'PUT',
         url: `${apiBase}?id=${id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: roll,
         success: res => {
@@ -76,7 +79,8 @@ export default {
         method: 'DELETE',
         url: `${apiBase}?id=${id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: null,
         success: res => {

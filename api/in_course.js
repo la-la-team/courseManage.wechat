@@ -1,6 +1,6 @@
 import store from '../store/store.js'
 const apiBase = store.data.server + store.data.apiBase + '/in_course'
-
+const sessionId = wx.getStorageSync('sessionId')
 export default {
   getByCourseId: (course_id) => {
     return new Promise((resolve, reject) => {
@@ -8,7 +8,8 @@ export default {
         method: 'GET',
         url: `${apiBase}?course_id=${course_id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {
@@ -30,7 +31,8 @@ export default {
         method: 'GET',
         url: `${apiBase}?course_id=${course_id}&student_id=${student_id}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
           if (res.statusCode != 200 || res.data.status == false) {
@@ -52,7 +54,8 @@ export default {
         method: 'POST',
         url: `${apiBase}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: incourse,
         success: res => {
@@ -75,7 +78,8 @@ export default {
         method: 'DELETE',
         url: `${apiBase}?course_id=${courseId}&student_id=${studentId}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: null,
         success: res => {
@@ -98,7 +102,8 @@ export default {
         method: 'DELETE',
         url: `${apiBase}?course_id=${courseId}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: null,
         success: res => {
@@ -121,7 +126,8 @@ export default {
         method: 'DELETE',
         url: `${apiBase}?student_id=${studentId}`,
         header: {
-          //'Authorization': `Bearer ${store.data.token}`
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         data: null,
         success: res => {

@@ -36,9 +36,13 @@
                 <view class="weui-form-preview__label">助教邮箱</view>
                 <view class="weui-form-preview__value">{{ta_emails? ta_emails: "暂无助教"}}</view>
               </view>
+              <view class="weui-form-preview__item" hidden='{{!curUserIsCreator}}'>
+                <view class="weui-form-preview__label">邀请码</view>
+                <view class="weui-form-preview__value green">{{curCourse.course_key}}</view>
+              </view>
             </view>
             <view class="weui-form-preview__ft">
-              <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" hidden='{{curUserHasJoined}}'>加入</navigator>
+              <button bindtap='joinCourse' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" hidden='{{curUserHasJoined || curUserIsCreator}}'>加入</button>
             </view>
           </view>
         </view> 
@@ -47,16 +51,14 @@
 
             <view class="weui-uploader__files" id="uploaderFiles">
 
-              <block wx:for="{{files}}" wx:key="*this">
-                <view class="weui-uploader__file" bindtap="previewFile" >
-                  <image class="weui-uploader__img" src="{{item.filetype_img}}" mode="aspectFill" />
-                  <text class="file_name">{{item.file_name}}</text>
+              <view wx:for="{{files}}" >
+                <view class="weui-uploader__file" bindtap="previewFile" data-item='{{item}}'>
+                  <image class="weui-uploader__img" src="{{pdf_img}}" mode="aspectFill" />
+                  <text class="file_name">{{item.name}}</text>
                 </view>
-              </block>
+              </view>
             </view>
-            <view class="weui-uploader__input-box">
-              <view class="weui-uploader__input" bindtap="chooseFile"></view>
-            </view>
+            
           </view>
         </view>
         <view class="weui-tab__content" hidden="{{activeIndex != 2}}">

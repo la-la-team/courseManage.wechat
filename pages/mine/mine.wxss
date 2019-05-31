@@ -1,14 +1,22 @@
 /* pages/mine/mine.wxss */
 
-.userinfo-avatar{
-  height: 150rpx;
-  width: 150rpx;
-  border-radius: 100rpx;
-  border: solid 1px gray;
-  margin: 20rpx;
-}
 
 .userInfo{
   border: solid 2px bisque;
   border-radius: 25rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
+
+.userinfo-avatar {  
+  overflow:hidden;  
+  display: block;  
+  width: 160rpx;  
+  height: 160rpx;  
+  margin: 20rpx;  
+  margin-top: 50rpx;  
+  border-radius: 50%;  
+  border: 2px solid #fff;  
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);  
+}  

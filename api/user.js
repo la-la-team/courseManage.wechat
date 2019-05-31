@@ -54,7 +54,6 @@ export default{
       url: `${apiBase}`,
       header: {
         'content-type': 'application/json',
-        'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
       },
       data: user,
       success: res => {

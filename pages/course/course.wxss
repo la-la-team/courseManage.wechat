@@ -134,3 +134,7 @@
   right: 5%;
   top: 50%;
 }
+
+.green {
+  color: #1aad19;
+}

@@ -66,7 +66,8 @@ create(store, {
           course_name: _course.name,
           content: _course.content,
           creator_id: _course.creator_id,
-          course_id: _course.id
+          course_id: _course.id,
+          course_key: _course.creator_id == wx.getStorageSync("openid") ? _course.course_key : ""
         }
         courses.push(item)
 
@@ -132,6 +133,9 @@ create(store, {
       this.setData({
         imgPaths: img_paths
       })
+      this.data.course_array.forEach((course, index) => {
+        course.course_img_url = img_paths[index]
+      })
     }, err => {
       console.log(err)
     })
@@ -150,7 +154,7 @@ create(store, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**
@@ -190,6 +194,7 @@ create(store, {
 
   show_course_detail:function (e) {
     this.store.data.curCourse = e.currentTarget.dataset.item;
+    console.log(e)
     wx.navigateTo({
       url: '/pages/course/course'
     });

@@ -2,6 +2,28 @@ import store from '../store/store.js'
 const apiBase = store.data.server + store.data.apiBase + '/in_course'
 const sessionId = wx.getStorageSync('sessionId')
 export default {
+  getByStudentId: (student_id) => {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        method: 'GET',
+        url: `${apiBase}?student_id=${student_id}`,
+        header: {
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
+        },
+        success: res => {
+          if (res.statusCode != 200 || res.data.status == false) {
+            reject(res)
+          } else {
+            resolve(res)
+          }
+        },
+        fail: err => {
+          reject(err)
+        }
+      })
+    })
+  },
   getByCourseId: (course_id) => {
     return new Promise((resolve, reject) => {
       wx.request({

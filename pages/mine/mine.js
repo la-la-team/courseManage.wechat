@@ -1,4 +1,6 @@
 // pages/mine/mine.js
+import api_user from '../../api/user.js'
+
 const app = getApp();
 
 Page({
@@ -16,12 +18,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (app.globalData.userInfo) {
+    // if (app.globalData.userInfo) {
+    //   this.setData({
+    //     userInfo: app.globalData.userInfo,
+    //     hasUserInfo: true
+    //   })
+    // }
+
+    api_user.getUserById(wx.getStorageSync("openid")).then(res => {
       this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+        userInfo: res.data.data
       })
-    }
+    }, err => {
+      console.log(err)
+    })
+
   },
 
   /**

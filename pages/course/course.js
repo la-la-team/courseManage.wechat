@@ -4,6 +4,8 @@ import create from '../../utils/create'
 import api_homework from '../../api/homework.js'
 import api_user from '../../api/user.js'
 import api_charge_course from '../../api/charge_course.js'
+import api_in_course from '../../api/in_course.js'
+import api_ppt_file from '../../api/ppt_file.js'
 
 create(store, {
 
@@ -15,21 +17,14 @@ create(store, {
     activeIndex: 0,
     tabs: ['简介', '课件', '作业', '点名'],
     curUserHasJoined: false,
+    curUserIsCreator: false,
     sliderOffset: 0,
     sliderLeft: 0,
     creator_info: null,
     ta_names: null,
     ta_emails: null,
-    files: [{
-      filetype_img: "/static/img/pdf_icon.png",
-      file_name: "文件1"
-    }, {
-        filetype_img: "/static/img/pdf_icon.png",
-        file_name: "文件2"
-    }, {
-        filetype_img: "/static/img/pdf_icon.png",
-        file_name: "文件3"
-    }],
+    pdf_img: "/static/img/pdf_icon.png",
+    files: [],
 
     homework: []
   },
@@ -38,14 +33,33 @@ create(store, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("onLoad")
+    console.log("course.js onLoad")
     if (this.store.data.curCourse){
       this.setData({
         curCourse: this.store.data.curCourse
       })
       console.log(this.data.curCourse)
       var creatorid = this.data.curCourse.creator_id
+
+      //if i am creator, show course_key
+      this.setData({
+        curUserIsCreator: creatorid == wx.getStorageSync("openid")
+      })
+
       var courseid = this.data.curCourse.course_id
+
+      //if i have joined, do not show join button
+      api_in_course.getByCourseIdAndStuId(this.data.curCourse.course_id, wx.getStorageSync("openid")).then(res => {
+        if (res.data.data.length != 0){
+          this.setData({
+            curUserHasJoined: true
+          })
+        }
+      }, err => {
+        console.log(err)
+      })
+
+
       var creator_info = null;
       var ta_info = null;
       var ta_names = null;
@@ -90,7 +104,6 @@ create(store, {
             ta_emails = ta_info.email
           }
         })
-        console.log(ta_names)
         this.setData({
           ta_names: ta_names,
           ta_emails: ta_emails
@@ -186,12 +199,30 @@ create(store, {
           homework: homework
         })
       })
+    } else if (this.data.activeIndex == 1){
+      //获取所有ppt
+      api_ppt_file.getPPTListByCourseid(1).then(res => {
+        console.log(res)
+        var ppts = []
+        res.data.data.forEach(result => {
+          var temp = {
+            id: result.id,
+            name: result.name,
+            creator_id: result.creator_id
+          }
+
+          ppts.push(temp)
+        })
+
+        this.setData({
+          files: ppts
+        })
+      }, err => {
+        console.log(err)
+      })
     }
   },
 
-  previewFile: function() {
-    
-  },
 
   chooseFile: function(){
     wx.getSavedFileList({
@@ -214,5 +245,45 @@ create(store, {
     api_homework.deleteHomework(e.currentTarget.dataset.item.id).then(function(res) {
       console.log(res)
     })
+  },
+
+  joinCourse: function(e) {
+    //console.log(e.currentTarget.dataset.item.id)
+    var incourse = {
+      course_id: this.data.curCourse.course_id,
+      student_id: wx.getStorageSync("openid"),
+      course_key: "",
+    }
+    api_in_course.postIncourse(incourse).then(res => {
+      console.log(res)
+    }, err => {
+      console.log(err)
+    })
+  },
+
+  previewFile: function (e) {
+    console.log(e)
+    var id = e.currentTarget.dataset.item.id;
+    var name = e.currentTarget.dataset.item.name;
+    
+    api_ppt_file.getPPTById(id)
+    .then(res => {
+      wx.showToast({
+        title: '下载成功',
+      })
+      const filePath = res.tempFilePath
+      console.log(filePath)
+      wx.openDocument({
+        filePath: filePath,
+        fileType: name.split('.')[1],
+        success: function (res) {
+          console.log('打开文档成功')
+        },
+        fail: function(e) {
+          console.log(e)
+        }
+      })
+    })
+
   }
 })

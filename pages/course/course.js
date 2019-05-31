@@ -203,8 +203,8 @@ create(store, {
         for (let i = 0; i < res.data.data.length; i++) {
           roll.push({
             title: res.data.data[i].title,
-            begin_time: res.data.data[i].begin_time,
-            end_time: res.data.data[i].end_time,
+            begin_time: res.data.data[i].begin_time.substring(0,16),
+            end_time: res.data.data[i].end_time.substring(0, 16),
           })
         }
         that.setData({

@@ -8,7 +8,7 @@ import api_charge_course from '../../api/charge_course.js'
 import api_in_course from '../../api/in_course.js'
 import api_ppt_file from '../../api/ppt_file.js'
 import api_in_roll from '../../api/in_roll.js'
-import util from '../../utils/util.js' 
+import util from '../../utils/util.js'
 
 create(store, {
 
@@ -42,7 +42,7 @@ create(store, {
    */
   onLoad: function (options) {
     console.log("course.js onLoad")
-    if (this.store.data.curCourse){
+    if (this.store.data.curCourse) {
       this.setData({
         curCourse: this.store.data.curCourse
       })
@@ -58,7 +58,7 @@ create(store, {
 
       //if i have joined, do not show join button
       api_in_course.getByCourseIdAndStuId(this.data.curCourse.course_id, wx.getStorageSync("openid")).then(res => {
-        if (res.data.data.length != 0){
+        if (res.data.data.length != 0) {
           this.setData({
             curUserHasJoined: true
           })
@@ -83,13 +83,13 @@ create(store, {
         console.log(err)
         console.log("获取创建者信息失败")
       })
-      
-      
+
+
       api_charge_course.getByCourseId(courseid).then(res => {
         console.log(res)
         res.data.data.forEach(chgcourse => {
-        getTainfoPromises.push(api_user.getUserById(chgcourse.ta_id))
-      })
+          getTainfoPromises.push(api_user.getUserById(chgcourse.ta_id))
+        })
 
         return this.store.doManyPromises(getTainfoPromises)
 
@@ -98,15 +98,15 @@ create(store, {
         console.log("获取助教信息失败")
       }).then(res => {
         console.log(res)
-        res.forEach(result =>{
+        res.forEach(result => {
           ta_info = result.data.data
-          if(ta_names){
+          if (ta_names) {
             ta_names = ta_names + "; " + ta_info.name
           } else {
             ta_names = ta_info.name
           }
 
-          if(ta_emails){
+          if (ta_emails) {
             ta_emails = ta_emails + "; " + ta_info.email
           } else {
             ta_emails = ta_info.email
@@ -121,7 +121,7 @@ create(store, {
         console.log("获取助教信息失败")
       })
 
-      
+
     }
 
     this.setData({
@@ -150,8 +150,6 @@ create(store, {
     wx.setNavigationBarTitle({
       title: '课程详情'
     })
-
-    
   },
 
   /**
@@ -198,15 +196,14 @@ create(store, {
 
     //进入作业
     if (this.data.activeIndex == 2) {
-      
+
       console.log(store.data.curCourse)
-      api_homework.getHomework(store.data.curCourse.course_id).then(function(res){
+      api_homework.getHomework(store.data.curCourse.course_id).then(function (res) {
 
         console.log("获取作业列表")
         console.log(res)
         let homework = []
-        for(let i=0;i<res.data.data.length;i++)
-        {
+        for (let i = 0; i < res.data.data.length; i++) {
           homework.push({
             title: res.data.data[i].title,
             content: res.data.data[i].content,
@@ -218,7 +215,7 @@ create(store, {
           homework: homework
         })
       })
-    } else if (this.data.activeIndex == 1){
+    } else if (this.data.activeIndex == 1) {
       //获取所有ppt
       api_ppt_file.getPPTListByCourseid(1).then(res => {
         console.log(res)
@@ -251,7 +248,7 @@ create(store, {
         for (let i = 0; i < res.data.data.length; i++) {
           roll.push({
             title: res.data.data[i].title,
-            begin_time: res.data.data[i].begin_time.substring(0,16),
+            begin_time: res.data.data[i].begin_time.substring(0, 16),
             end_time: res.data.data[i].end_time.substring(0, 16),
             id: res.data.data[i].id
           })
@@ -264,7 +261,7 @@ create(store, {
   },
 
 
-  chooseFile: function(){
+  chooseFile: function () {
     wx.getSavedFileList({
       success: function (res) {
         console.log(res.fileList)
@@ -272,29 +269,29 @@ create(store, {
     })
   },
 
-  addHomework: function() {
+  addHomework: function () {
     console.log("添加作业")
     wx.navigateTo({
       url: '../addHomework/addHomework',
     })
   },
 
-  addRoll: function() {
+  addRoll: function () {
     console.log("发起签到")
     wx.navigateTo({
       url: '../addRoll/addRoll',
     })
   },
 
-  deleteHomework: function(e) {
+  deleteHomework: function (e) {
     console.log("删除作业")
     console.log(e.currentTarget.dataset.item.id)
-    api_homework.deleteHomework(e.currentTarget.dataset.item.id).then(function(res) {
+    api_homework.deleteHomework(e.currentTarget.dataset.item.id).then(function (res) {
       console.log(res)
     })
   },
 
-  joinCourse: function(e) {
+  joinCourse: function (e) {
     //console.log(e.currentTarget.dataset.item.id)
     this.setData({
       hiddenmodalput: true
@@ -327,7 +324,7 @@ create(store, {
     console.log(e)
     var id = e.currentTarget.dataset.item.id;
     var name = e.currentTarget.dataset.item.name;
-    
+
     api_ppt_file.getPPTById(id)
     .then(res => {
       wx.showToast({
@@ -352,17 +349,34 @@ create(store, {
       })
       wx.hideLoading()
     })
+      .then(res => {
+        wx.showToast({
+          title: '下载成功',
+        })
+        const filePath = res.tempFilePath
+        console.log(filePath)
+        wx.openDocument({
+          filePath: filePath,
+          fileType: name.split('.')[1],
+          success: function (res) {
+            console.log('打开文档成功')
+          },
+          fail: function (e) {
+            console.log(e)
+          }
+        })
+      })
 
   },
 
 
-  bindInputKey: function(e) {
+  bindInputKey: function (e) {
     this.setData({
       curInputKey: e.detail.value
     })
   },
 
-  showInput: function(){
+  showInput: function () {
     this.setData({
       hiddenmodalput: false
     })
@@ -373,12 +387,35 @@ create(store, {
     let inroll = {
       roll_id: e.currentTarget.dataset.item.id,
       student_id: wx.getStorageSync("openid"),
-      time: util.formatTime(new Date())+":00"
+      time: util.formatTime(new Date()) + ":00"
     }
     console.log(inroll)
-    api_in_roll.postInroll(inroll).then(function(res) {
+    api_in_roll.postInroll(inroll).then(function (res) {
       console.log("签到成功！")
       console.log(res)
+    })
+  },
+
+  rollInTable: function(e) {
+    console.log("获取签到表:"+e.currentTarget.dataset.item.id)
+    api_in_roll.getInrollById(e.currentTarget.dataset.item.id).then(function(res) {
+      console.log("返回签到表")
+      console.log(res)
+      wx.showToast({
+        title: '下载成功',
+      })
+      const filePath = res.tempFilePath
+      console.log(filePath)
+      wx.openDocument({
+        filePath: filePath,
+        fileType: 'xlsx',
+        success: function (res) {
+          console.log('打开文档成功')
+        },
+        fail: function (e) {
+          console.log(e)
+        }
+      })
     })
   }
 })

@@ -138,3 +138,9 @@
 .green {
   color: #1aad19;
 }
+
+.right-top {
+  position: absolute;
+  right: 5%;
+  top: 5%;
+}

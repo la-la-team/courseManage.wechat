@@ -1,0 +1,25 @@
+{
+  "name": "coursemanage.wechat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "miniprogram-datepicker": "^0.3.0",
+    "vant-weapp": "^0.5.14",
+    "xlsx": "^0.14.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/la-la-team/courseManage.wechat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/la-la-team/courseManage.wechat/issues"
+  },
+  "homepage": "https://github.com/la-la-team/courseManage.wechat#readme"
+}

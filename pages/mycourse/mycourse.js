@@ -52,7 +52,7 @@ create(store, {
       })
       .then(res => {
           console.log(res)
-          var len = res.data.data.length
+          var len = res.length
           if (len == 0) {
             wx.hideLoading()
             return
@@ -60,7 +60,8 @@ create(store, {
           var getid_promises = []
 
           //获取课程基本信息
-          res.data.data.forEach(function (_course) {
+          res.forEach(function (result) {
+            var _course = result.data.data
             getid_promises.push(api_user.getUserById(_course.creator_id))
 
             var item = {

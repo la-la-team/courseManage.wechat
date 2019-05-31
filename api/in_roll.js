@@ -4,7 +4,7 @@ const sessionId = wx.getStorageSync('sessionId')
 export default {
   getInrollById: (roll_id) => {
     return new Promise((resolve, reject) => {
-      wx.request({
+      wx.downloadFile({
         method: 'GET',
         url: `${apiBase}?roll_id=${roll_id}`,
         header: {
@@ -12,11 +12,7 @@ export default {
           'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
         },
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
-            reject(res)
-          } else {
             resolve(res)
-          }
         },
         fail: err => {
           reject(err)
@@ -59,7 +55,7 @@ export default {
         },
         data: inroll,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == 'failed') {
             reject(res)
           } else {
             resolve(res)

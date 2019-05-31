@@ -96,6 +96,7 @@
                         <view class="weui-media-box__info__meta red_color">截止时间</view>
                         <view class="weui-media-box__info__meta red_color">{{item.end_time}}</view>
                     </view>
+                    <button class="weui-btn right-top" hidden="{{userType!=1}}" size="mini" type="default" bindtap='rollInTable' data-item='{{item}}'>查看签到表</button>
                     <button class="weui-btn mini-btn right" type="warn" size="mini" bindtap='deleteRoll' data-item='{{item}}' hidden="{{userType!=1}}">删除</button>
                     <button class="weui-btn mini-btn right" type="primary" size="mini" bindtap='rollIn' data-item='{{item}}' hidden="{{userType!=0}}">签到</button>
                 </view>
@@ -104,9 +105,7 @@
             <view class="weui-btn-area">
               <button class="weui-btn" type="primary" hidden="{{userType!=1}}" bindtap="addRoll">发起签到</button>
             </view>
-            <view class="weui-btn-area">
-              <button class="weui-btn" hidden="{{userType!=1}}" type="default" >查看签到表</button>
-            </view>
+              
         </view>
       </view>
       <view class="weui-navbar">

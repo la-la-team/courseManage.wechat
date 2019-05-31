@@ -318,11 +318,37 @@ create(store, {
   },
 
   previewFile: function (e) {
+    wx.showLoading({
+      title: '正在加载',
+    })
     console.log(e)
     var id = e.currentTarget.dataset.item.id;
     var name = e.currentTarget.dataset.item.name;
 
     api_ppt_file.getPPTById(id)
+    .then(res => {
+      wx.showToast({
+        title: '下载成功',
+      })
+      const filePath = res.tempFilePath
+      console.log(filePath)
+      wx.openDocument({
+        filePath: filePath,
+        fileType: name.split('.')[1],
+        success: function (res) {
+          console.log('打开文档成功')
+          wx.hideLoading()
+        },
+        fail: function(e) {
+          console.log(e)
+        }
+      })
+    }, err => {
+      wx.showToast({
+        title: '下载失败',
+      })
+      wx.hideLoading()
+    })
       .then(res => {
         wx.showToast({
           title: '下载成功',

@@ -25,6 +25,29 @@ export default {
     })
   },
 
+  getRollByCourseId: (id) => {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        method: 'GET',
+        url: `${apiBase}?course_id=${id}`,
+        header: {
+          'content-type': 'application/json',
+          'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
+        },
+        success: res => {
+          if (res.statusCode != 200 || res.data.status == false) {
+            reject(res)
+          } else {
+            resolve(res)
+          }
+        },
+        fail: err => {
+          reject(err)
+        }
+      })
+    })
+  },
+
   postRoll: (roll) => {
     return new Promise((resolve, reject) => {
       wx.request({

@@ -50,6 +50,7 @@ create(store, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    
     let token = wx.getStorageSync('token')
     console.log(token)
     if (token) {
@@ -126,8 +127,10 @@ create(store, {
     {
       return
     }
+    console.log("注册")
     wx.login({
       success: function (res) {
+        console.log("success")
         if (res.code) {
           wx.setStorageSync("token", res.code)
           //发起网络请求
@@ -143,7 +146,7 @@ create(store, {
             },
             method: 'POST',
             success: res => {
-              
+              console.log(res)
               if(res.data.status == "failed"){
                 return 
               }
@@ -183,6 +186,9 @@ create(store, {
         } else {
           console.log('登录失败！' + res.errMsg)
         }
+      },
+      fail: err =>{
+        console.log(err)
       }
     });
   },

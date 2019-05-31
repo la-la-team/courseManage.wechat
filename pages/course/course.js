@@ -2,6 +2,7 @@
 import store from '../../store/store.js'
 import create from '../../utils/create'
 import api_homework from '../../api/homework.js'
+import api_roll from '../../api/roll.js'
 import api_user from '../../api/user.js'
 import api_charge_course from '../../api/charge_course.js'
 import api_in_course from '../../api/in_course.js'
@@ -26,7 +27,9 @@ create(store, {
     pdf_img: "/static/img/pdf_icon.png",
     files: [],
 
-    homework: []
+    homework: [],
+
+    roll: []
   },
 
   /**
@@ -173,6 +176,7 @@ create(store, {
   },
 
   tabClick: function (e) {
+    var that = this
     this.setData({
       sliderOffset: e.currentTarget.offsetLeft,
       activeIndex: e.currentTarget.id
@@ -180,8 +184,9 @@ create(store, {
 
     //进入作业
     if (this.data.activeIndex == 2) {
-      var that = this
-      api_homework.getHomework(store.data.curCourse).then(function(res){
+      
+      console.log(store.data.curCourse)
+      api_homework.getHomework(store.data.curCourse.course_id).then(function(res){
 
         console.log("获取作业列表")
         console.log(res)
@@ -221,6 +226,26 @@ create(store, {
         console.log(err)
       })
     }
+    else if (this.data.activeIndex == 3)  //进入点名
+    {
+      console.log(store.data.curCourse.course_id)
+      api_roll.getRollByCourseId(store.data.curCourse.course_id).then(function (res) {
+
+        console.log("获取签到列表")
+        console.log(res)
+        let roll = []
+        for (let i = 0; i < res.data.data.length; i++) {
+          roll.push({
+            title: res.data.data[i].title,
+            begin_time: res.data.data[i].begin_time.substring(0,16),
+            end_time: res.data.data[i].end_time.substring(0, 16),
+          })
+        }
+        that.setData({
+          roll: roll
+        })
+      })
+    }
   },
 
 
@@ -236,6 +261,13 @@ create(store, {
     console.log("添加作业")
     wx.navigateTo({
       url: '../addHomework/addHomework',
+    })
+  },
+
+  addRoll: function() {
+    console.log("发起签到")
+    wx.navigateTo({
+      url: '../addRoll/addRoll',
     })
   },
 

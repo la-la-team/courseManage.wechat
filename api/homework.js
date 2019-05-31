@@ -63,7 +63,7 @@ export default {
         },
         data: homework,
         success: res => {
-          if (res.statusCode != 200 || res.data.status == false) {
+          if (res.statusCode != 200 || res.data.status == 'failed') {
             reject(res)
           } else {
             resolve(res)
@@ -102,7 +102,7 @@ export default {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'DELETE',
-        url: `${apiBase}/${id}`,
+        url: `${apiBase}`,
         header: {
           'content-type': 'application/json',
           'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`

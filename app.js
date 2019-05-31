@@ -102,5 +102,6 @@ App({
     })
   },
   globalData: {
+    store: store
   }
 })

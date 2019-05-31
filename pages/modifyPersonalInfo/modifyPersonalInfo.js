@@ -50,7 +50,9 @@ create(store, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    wx.setNavigationBarTitle({
+      title: '课程帮手'
+    })
     let token = wx.getStorageSync('token')
     console.log(token)
     if (token) {

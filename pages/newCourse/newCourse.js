@@ -11,9 +11,8 @@ create(store, {
    */
   data: {
     hiddenmodalput: true,
-    TA_ids: [666, 777],
-    _TA_id_arr: null,
-    newTaId: "学号",
+    TA_ids: [],
+    newTaId: null,
     tempFilePaths: null ,
     courseName: null,
     courseDesc: null,
@@ -107,10 +106,14 @@ create(store, {
   },
 
   confirm: function () {
+    var arr = this.data.TA_ids;
+    arr.push(this.data.newTaId)
     this.setData({
       hiddenmodalput: true,
-      TA_ids: this.data.TA_ids.concat(this.data.newTaId)
+      TA_ids: arr
     });
+
+    console.log(this.data.TA_ids)
   } ,
 
   cancel: function () {
@@ -129,6 +132,12 @@ create(store, {
     this.setData({
       courseDesc: e.detail.value,
       descLength: e.detail.value.length
+    })
+  },
+
+  inputTa: function(e) {
+    this.setData({
+      newTaId: e.detail.value
     })
   },
 

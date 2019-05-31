@@ -147,6 +147,10 @@ create(store, {
       sliderOffset: windowWidth / this.data.tabs.length * this.data.activeIndex
     });
 
+    wx.setNavigationBarTitle({
+      title: '课程详情'
+    })
+
     
   },
 

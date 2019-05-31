@@ -44,7 +44,7 @@
 
       <view class="box flex-row container" bindtap='show_course_detail' data-item='{{item}}'>
         <view class='course-img-view'>
-          <image class='course-img' src='{{imgPaths[index]}}'></image>
+          <image class='course-img' src='{{item.course_img_url}}'></image>
         </view>
         <view class="course-discription-view flex-column">
           <view class="course-name">{{item.course_name}}</view>

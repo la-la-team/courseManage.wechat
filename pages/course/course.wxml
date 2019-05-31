@@ -98,7 +98,10 @@
             </view>
             </view>
             <view class="weui-btn-area">
-              <button class="weui-btn" type="primary" bindtap="addRoll">发起签到</button>
+              <button class="weui-btn" type="primary" hidden="{{userType!=1}}" bindtap="addRoll">发起签到</button>
+            </view>
+            <view class="weui-btn-area">
+              <button class="weui-btn" hidden="{{userType!=1}}" type="default" >查看签到表</button>
             </view>
         </view>
       </view>

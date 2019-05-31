@@ -7,6 +7,8 @@ import api_user from '../../api/user.js'
 import api_charge_course from '../../api/charge_course.js'
 import api_in_course from '../../api/in_course.js'
 import api_ppt_file from '../../api/ppt_file.js'
+import api_in_roll from '../../api/in_roll.js'
+import util from '../../utils/util.js' 
 
 create(store, {
 
@@ -14,6 +16,7 @@ create(store, {
    * 页面的初始数据
    */
   data: {
+    userType: null,
     curCourse: null,
     activeIndex: 0,
     tabs: ['简介', '课件', '作业', '点名'],
@@ -120,6 +123,11 @@ create(store, {
 
       
     }
+
+    this.setData({
+      userType: store.data.userType
+    })
+    console.log("user type:" + this.data.userType)
   },
 
   /**
@@ -241,6 +249,7 @@ create(store, {
             title: res.data.data[i].title,
             begin_time: res.data.data[i].begin_time.substring(0,16),
             end_time: res.data.data[i].end_time.substring(0, 16),
+            id: res.data.data[i].id
           })
         }
         that.setData({
@@ -333,6 +342,7 @@ create(store, {
 
   },
 
+
   bindInputKey: function(e) {
     this.setData({
       curInputKey: e.detail.value
@@ -342,6 +352,20 @@ create(store, {
   showInput: function(){
     this.setData({
       hiddenmodalput: false
+    })
+  },
+
+  rollIn: function (e) {
+    console.log("签到")
+    let inroll = {
+      roll_id: e.currentTarget.dataset.item.id,
+      student_id: wx.getStorageSync("openid"),
+      time: util.formatTime(new Date())+":00"
+    }
+    console.log(inroll)
+    api_in_roll.postInroll(inroll).then(function(res) {
+      console.log("签到成功！")
+      console.log(res)
     })
   }
 })

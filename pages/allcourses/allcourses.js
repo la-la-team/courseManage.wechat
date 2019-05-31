@@ -28,6 +28,13 @@ create(store, {
       mask: true
     })
 
+    api_user.getUserById(wx.getStorageSync("openid")).then(res => {
+      console.log(res.data.data)
+      store.data.userType = res.data.data.type
+    }, err => {
+      console.log(err)
+    })
+
     var courses = []
     var courseHeads = []
 

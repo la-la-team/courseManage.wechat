@@ -26,6 +26,7 @@ Page({
     // }
 
     api_user.getUserById(wx.getStorageSync("openid")).then(res => {
+      console.log(res.data.data)
       this.setData({
         userInfo: res.data.data
       })

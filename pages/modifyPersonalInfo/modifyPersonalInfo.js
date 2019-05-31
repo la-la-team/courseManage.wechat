@@ -56,21 +56,28 @@ create(store, {
     if (token) {
       console.log(wx.getStorageSync('sessionId'))
       api_user.getUserByToken(token).then(res => {
-        console.log("登录成功")
+        console.log("登录")
         console.log(res)
-        if (res.cookies[0]) {
-          var cookie = res.cookies[0];
-          var session = cookie.split(';')[0];
-          console.log(session)
-          wx.setStorageSync('sessionId', session.split('=')[1])
+        if(res.data.status == "failed"){
+          return;
+        } else {
+          if (res.cookies[0]) {
+            var cookie = res.cookies[0];
+            var session = cookie.split(';')[0];
+            console.log(session)
+            wx.setStorageSync('sessionId', session.split('=')[1])
+          }
         }
+
+        wx.switchTab({
+          url: '/pages/allcourses/allcourses'
+        })
+  
       }, err => {
         console.log("登录失败")
       })
 
-      wx.switchTab({
-        url: '/pages/allcourses/allcourses'
-      })
+      
     }
   },
 
@@ -128,21 +135,30 @@ create(store, {
       return
     }
     console.log("注册")
+    wx.showLoading({
+      title: '正在提交',
+    })
     wx.login({
       success: function (res) {
         console.log("success")
         if (res.code) {
           wx.setStorageSync("token", res.code)
+          var user = {
+            id: parseInt(that.data.number),
+            name: that.data.name,
+            token: res.code,
+            email: that.data.email,
+            school: that.data.schools[that.data.schoolIndex],
+            type: parseInt(that.data.typeIndex)
+          }
+          console.log(user)
           //发起网络请求
           wx.request({
             url: 'http://182.254.206.244:8090/user',
-            data: {
-              id: parseInt(that.data.number),
-              name: that.data.name,
-              token: res.code,
-              email: that.data.email,
-              school: that.data.schools[that.data.schoolIndex],
-              type: that.data.typeIndex
+            data: user,
+            header: {
+              'content-type': 'application/json',
+              'cookie': `gosessionid=${wx.getStorageSync('sessionId')}`
             },
             method: 'POST',
             success: res => {
@@ -151,9 +167,13 @@ create(store, {
                 return 
               }
               console.log("注册成功！")
+              wx.hideLoading()
+              wx.showToast({
+                title: '注册成功',
+              })
               console.log(res)
               wx.setStorageSync('openid', parseInt(that.data.number))
-              if(res.cookies.length != 0){
+              if (res.cookies && res.cookies.length != 0){
                 var cookie = res.cookies[0];
                 var session = cookie.split(';')[0];
                 var sessionId = session.split('=')[1]

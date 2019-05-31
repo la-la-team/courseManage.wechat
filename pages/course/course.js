@@ -25,6 +25,8 @@ create(store, {
     ta_names: null,
     ta_emails: null,
     pdf_img: "/static/img/pdf_icon.png",
+    hiddenmodalput: true,
+    curInputKey: null,
     files: [],
 
     homework: [],
@@ -281,15 +283,27 @@ create(store, {
 
   joinCourse: function(e) {
     //console.log(e.currentTarget.dataset.item.id)
+    this.setData({
+      hiddenmodalput: true
+    })
     var incourse = {
       course_id: this.data.curCourse.course_id,
       student_id: wx.getStorageSync("openid"),
-      course_key: "",
+      course_key: this.data.curInputKey,
     }
     api_in_course.postIncourse(incourse).then(res => {
       console.log(res)
+      wx.showToast({
+        title: '加入成功',
+      })
+      this.setData({
+        curUserHasJoined: true
+      })
     }, err => {
       console.log(err)
+      wx.showToast({
+        title: '加入失败',
+      })
     })
   },
 
@@ -317,5 +331,17 @@ create(store, {
       })
     })
 
+  },
+
+  bindInputKey: function(e) {
+    this.setData({
+      curInputKey: e.detail.value
+    })
+  },
+
+  showInput: function(){
+    this.setData({
+      hiddenmodalput: false
+    })
   }
 })

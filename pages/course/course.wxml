@@ -42,8 +42,12 @@
               </view>
             </view>
             <view class="weui-form-preview__ft">
-              <button bindtap='joinCourse' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" hidden='{{curUserHasJoined || curUserIsCreator}}'>加入</button>
+              <button bindtap='showInput' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" hidden='{{curUserHasJoined || curUserIsCreator}}'>加入</button>
             </view>
+
+            <modal id="modal" hidden="{{hiddenmodalput}}" title="请输入邀请码" confirm-text="添加" cancel-text="取消" bindcancel="cancel" bindconfirm="joinCourse">
+            <input type='text' bindinput='bindInputKey'  auto-focus="true" />
+            </modal>
           </view>
         </view> 
         <view class="weui-tab__content" hidden="{{activeIndex != 1}}">

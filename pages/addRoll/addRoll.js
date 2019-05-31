@@ -126,6 +126,7 @@ Page({
           title: that.data.title,
           begin_time: that.data.begin_date+" "+that.data.begin_time,
           end_time: that.data.end_date+" "+that.data.end_time,
+          id: res.data.id
         })
         prePage.setData({
           roll: roll

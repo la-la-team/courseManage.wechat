@@ -150,8 +150,6 @@ create(store, {
     wx.setNavigationBarTitle({
       title: '课程详情'
     })
-
-
   },
 
   /**

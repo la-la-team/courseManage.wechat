@@ -36,10 +36,10 @@
       </view>
     </view>
     <view class="weui-cells__title_two">添加助教
-      <button class="weui-btn mini-btn right" type="default" size="mini" bindtap='addTa'>添加</button>
+      <button class="weui-btn mini-btn right" type="default" size="mini" bindtap='addTa' >添加</button>
     </view>
     <view class="weui-cells weui-cells_after-title">
-      <view class="weui-cell" wx:for="{{TA_ids}}">
+      <view class="weui-cell" wx:for="{{TA_ids}}" data-item='{{item}}'>
         <view class="weui-cell__hd">
           <view class="weui-label">学号：</view>
         </view>
@@ -47,7 +47,7 @@
           <view class="weui-label right">{{item}}</view>
         </view>
         <view class="weui-cell__bd">
-          <view class="right">移除</view>
+          <button class="right">移除</button>
         </view>
       </view>
     </view>
@@ -55,6 +55,6 @@
   </view>
 
   <modal id="modal" hidden="{{hiddenmodalput}}" title="输入助教学号" confirm-text="添加" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
-  <input type='number' bindinput='{{newTaId}}'  auto-focus="true" />
+  <input type='number' bindinput='inputTa' auto-focus="true" />
   </modal>
 </view>

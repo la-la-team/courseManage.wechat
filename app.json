@@ -9,8 +9,8 @@
     "pages/addHomework/addHomework",
     "pages/logs/logs",
     "pages/mine/mine",
-    "pages/newCourse/newCourse"
-    
+    "pages/newCourse/newCourse",
+    "pages/addRoll/addRoll"
   ],
   "window": {
     "backgroundTextStyle": "light",

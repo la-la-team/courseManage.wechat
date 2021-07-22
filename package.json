@@ -6,7 +6,7 @@
   "dependencies": {
     "miniprogram-datepicker": "^0.3.0",
     "vant-weapp": "^0.5.14",
-    "xlsx": "^0.14.3"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {},
   "scripts": {
